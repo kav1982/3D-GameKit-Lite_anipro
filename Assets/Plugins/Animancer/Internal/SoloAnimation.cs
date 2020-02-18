@@ -11,7 +11,7 @@ namespace Animancer
     /// <summary>Plays a single <see cref="AnimationClip"/> on startup.</summary>
     [AddComponentMenu(Strings.MenuPrefix + "Solo Animation")]
     [HelpURL(Strings.APIDocumentationURL + "/SoloAnimation")]
-    [DefaultExecutionOrder(-5000)]// Initialise before anything else tries to use this component.
+    [DefaultExecutionOrder(-5000)]// 在使用此组件之前进行初始化
     public sealed class SoloAnimation : MonoBehaviour, IAnimationClipSource
     {
         /************************************************************************************************************************/
@@ -352,7 +352,7 @@ namespace Animancer
         /// <summary>[<see cref="IAnimationClipSource"/>]
         /// Adds the <see cref="Clip"/> to the list.
         /// </summary>
-        public void GetAnimationClips(List<AnimationClip> clips)
+        public void GetAnimationClips(List<AnimationClip> clips) //获取动画片段
         {
             if (_Clip != null)
                 clips.Add(_Clip);
@@ -420,7 +420,7 @@ namespace Animancer.Editor
 
         /************************************************************************************************************************/
 
-        private void RefreshSerializedAnimator()
+        private void RefreshSerializedAnimator() //刷新序列化的动画控制器
         {
             var targets = this.targets;
 

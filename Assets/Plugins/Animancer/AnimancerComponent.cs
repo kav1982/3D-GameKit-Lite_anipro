@@ -12,7 +12,7 @@ namespace Animancer
     /// The main component through which other scripts can interact with <see cref="Animancer"/>. It allows you to play
     /// animations on an <see cref="UnityEngine.Animator"/> without using a <see cref="RuntimeAnimatorController"/>.
     /// <para></para>
-    /// This class can be used as a custom yield instruction to wait until all animations finish playing.
+    /// 这个类可以作为一个自定义的携程指令来等待，直到所有的动画完成播放
     /// </summary>
     /// <remarks>
     /// This class is mostly just a wrapper that connects an <see cref="AnimancerPlayable"/> to an
@@ -20,19 +20,19 @@ namespace Animancer
     /// </remarks>
     [AddComponentMenu(Strings.MenuPrefix + "Animancer Component")]
     [HelpURL(Strings.APIDocumentationURL + "/AnimancerComponent")]
-    [DefaultExecutionOrder(-5000)]// Initialise before anything else tries to use this component.
+    [DefaultExecutionOrder(-5000)] //在其他组件尝试使用此组件之前进行初始化
     public class AnimancerComponent : MonoBehaviour,
         IAnimancerComponent, IEnumerable<AnimancerState>, IEnumerator, IAnimationClipSource, IAnimationClipCollection
     {
         /************************************************************************************************************************/
-        #region Fields and Properties
+        #region Fields and Properties //区域字段和属性
         /************************************************************************************************************************/
 
         [SerializeField, Tooltip("The Animator component which this script controls")]
         private Animator _Animator;
 
         /// <summary>[<see cref="SerializeField"/>]
-        /// The <see cref="UnityEngine.Animator"/> component which this script controls.
+        /// The <see cref="UnityEngine.Animator"/> 此脚本控制的组件
         /// </summary>
         public Animator Animator
         {
@@ -44,7 +44,7 @@ namespace Animancer
                 Editor.AnimancerEditorUtilities.SetIsInspectorExpanded(value, false);
 #endif
 
-                // It doesn't seem to be possible to stop the old Animator from playing the graph.
+                //要阻止那个老动画师玩图形游戏似乎是不可能的
 
                 _Animator = value;
                 if (IsPlayableInitialised)
@@ -62,8 +62,8 @@ namespace Animancer
         private AnimancerPlayable _Playable;
 
         /// <summary>
-        /// The internal system which manages the playing animations.
-        /// Accessing this property will automatically initialise it.
+        ///管理播放动画的内部系统
+        ///访问此属性将自动初始化它
         /// </summary>
         public AnimancerPlayable Playable
         {

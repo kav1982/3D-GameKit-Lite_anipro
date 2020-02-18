@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace Animancer.Examples.FineControl
 {
-    /// <summary>An object that can be interacted with.</summary>
-    public interface IInteractable
+    /// <summary>可以与之交互的对象</summary>
+    public interface IInteractable //Interactable可交互的
     {
         /************************************************************************************************************************/
 
@@ -15,8 +15,7 @@ namespace Animancer.Examples.FineControl
     }
 
     /// <summary>
-    /// Attempts to interact with whatever <see cref="IInteractable"/> the cursor is pointing at when the user clicks
-    /// the mouse.
+    /// 尝试与用户单击鼠标时光标指向的任何<see cref="IInteractable"/> 进行交互
     /// </summary>
     [AddComponentMenu(Strings.MenuPrefix + "Examples/Fine Control - Click To Interact")]
     [HelpURL(Strings.APIDocumentationURL + ".Examples.FineControl/ClickToInteract")]

@@ -1,18 +1,17 @@
 // Animancer // Copyright 2020 Kybernetik //
 
-#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value.
+#pragma warning disable CS0649 // 屏蔽Unity对于字段从未被赋值，并且始终具有其默认值的警告
 
 using UnityEngine;
 
 namespace Animancer.Examples.FineControl
 {
     /// <summary>
-    /// Demonstrates how to play a single "Wake Up" animation forwards to wake up and backwards to go back to sleep.
+    /// 演示如何播放一个单一的“唤醒”动画,向前播放"激活"和向后播放回到"休眠"
     /// <para></para>
-    /// This is an abstract class which is inherited by <see cref="SpiderBotSimple"/> and
-    /// <see cref="Locomotion.SpiderBotAdvanced"/>, meaning that you cannot attach this script to an object (because it
-    /// would be useless on its own) and both of those scripts get to share its functionality without needing to copy
-    /// the same methods into each of them.
+    /// 这是一个抽象类，它由 <see cref="SpiderBotSimple"/> 和 <see cref="Locomotion.SpiderBotAdvanced"/>继承, 
+    /// 这意味着您不能将这个脚本附加到一个对象上(因为它本身是无用的)，并且这两个脚本可以共享它的功能，
+    /// 而不需要将相同的方法复制到每个对象中
     /// </summary>
     [AddComponentMenu(Strings.MenuPrefix + "Examples/Fine Control - Spider Bot")]
     [HelpURL(Strings.APIDocumentationURL + ".Examples.FineControl/SpiderBot")]
@@ -31,20 +30,20 @@ namespace Animancer.Examples.FineControl
 
         /************************************************************************************************************************/
 
-        protected abstract bool IsMoving { get; }
+        protected abstract bool IsMoving { get; } //抽象方法的接口1
 
-        protected abstract ITransition MovementAnimation { get; }
+        protected abstract ITransition MovementAnimation { get; } //抽象方法的接口2
 
         /************************************************************************************************************************/
 
         protected virtual void Awake()
         {
-            // Start paused at the beginning of the animation.
+            // Start在动画开始时暂停。
             _Animancer.Play(_WakeUp);
             _Animancer.Evaluate();
             _Animancer.Playable.PauseGraph();
 
-            // Initialise the OnEnd events here so we don't allocate garbage every time they are used.
+            // 在这里初始化OnEnd事件，这样我们就不会每次使用它们时都分配垃圾。
             _WakeUp.Events.Sequence.OnEnd = () => _Animancer.Play(MovementAnimation);
             _Sleep.Events.Sequence.OnEnd = _Animancer.Playable.PauseGraph;
         }
@@ -59,7 +58,7 @@ namespace Animancer.Examples.FineControl
                 {
                     _WasMoving = true;
 
-                    // Make sure the graph is unpaused (because we pause it when going back to sleep).
+                    // 确保图形没有暂停(因为我们在返回休眠状态时会暂停它)。
                     _Animancer.Playable.UnpauseGraph();
                     _Animancer.Play(_WakeUp);
                 }
@@ -72,12 +71,12 @@ namespace Animancer.Examples.FineControl
 
                     var state = _Animancer.Play(_Sleep);
 
-                    // If it was past the last frame, skip back to the last frame now that it is playing backwards.
-                    // Otherwise just play backwards from the current time.
+                    // 如果它已经超过了最后一帧，那就跳到最后一帧，因为它正在回放。
+                    // 否则就只能从当前时间倒放。
                     if (state.NormalizedTime > 1)
                         state.NormalizedTime = 1;
 
-                    // If we did not initialise the OnEnd event in Awake, we could set it here:
+                    // 如果我们没有在Awake中初始化OnEnd事件，我们可以在这里设置它:
                     // state.OnEnd = _Animancer.Playable.PauseGraph;
                 }
             }

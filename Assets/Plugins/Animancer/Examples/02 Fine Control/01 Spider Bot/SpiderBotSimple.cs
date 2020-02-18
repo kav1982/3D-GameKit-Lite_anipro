@@ -1,16 +1,17 @@
 // Animancer // Copyright 2020 Kybernetik //
 
-#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value.
+#pragma warning disable CS0649 // 屏蔽Unity对于字段从未被赋值，并且始终具有其默认值的警告
 
 using UnityEngine;
 
 namespace Animancer.Examples.FineControl
 {
     /// <summary>
-    /// A <see cref="SpiderBot"/> with a single movement animation for demonstration purposes.
+    /// 一个 <see cref="SpiderBot"/> 代表单一的运动演示
     /// </summary>
     [AddComponentMenu(Strings.MenuPrefix + "Examples/Fine Control - Spider Bot Simple")]
     [HelpURL(Strings.APIDocumentationURL + ".Examples.FineControl/SpiderBotSimple")]
+    //sealed 密封类,最终类.不可再被继承
     public sealed class SpiderBotSimple : SpiderBot
     {
         /************************************************************************************************************************/
