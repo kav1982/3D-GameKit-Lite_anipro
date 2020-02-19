@@ -9,26 +9,25 @@ using UnityEngine.Playables;
 namespace Animancer
 {
     /// <summary>
-    /// The main component through which other scripts can interact with <see cref="Animancer"/>. It allows you to play
-    /// animations on an <see cref="UnityEngine.Animator"/> without using a <see cref="RuntimeAnimatorController"/>.
+    /// 其他脚本可以通过主要组件与<see cref="Animancer"/>进行交互. 它允许你
+    /// 驱动一个动画 <see cref="UnityEngine.Animator"/> 在不使用<see cref="RuntimeAnimatorController"/>自带状态机的情况下.
     /// <para></para>
     /// 这个类可以作为一个自定义的携程指令来等待，直到所有的动画完成播放
     /// </summary>
     /// <remarks>
-    /// This class is mostly just a wrapper that connects an <see cref="AnimancerPlayable"/> to an
-    /// <see cref="UnityEngine.Animator"/>.
+    /// 这个类主要是一个包装器,它将 <see cref="AnimancerPlayable"/> 连接到 <see cref="UnityEngine.Animator"/>.
     /// </remarks>
     [AddComponentMenu(Strings.MenuPrefix + "Animancer Component")]
     [HelpURL(Strings.APIDocumentationURL + "/AnimancerComponent")]
     [DefaultExecutionOrder(-5000)] //在其他组件尝试使用此组件之前进行初始化
     public class AnimancerComponent : MonoBehaviour,
-        IAnimancerComponent, IEnumerable<AnimancerState>, IEnumerator, IAnimationClipSource, IAnimationClipCollection
+        IAnimancerComponent, IEnumerable<AnimancerState>, IEnumerator, IAnimationClipSource, IAnimationClipCollection //AnimancerState:动画状态
     {
         /************************************************************************************************************************/
         #region Fields and Properties //区域字段和属性
         /************************************************************************************************************************/
 
-        [SerializeField, Tooltip("The Animator component which this script controls")]
+        [SerializeField, Tooltip("The Animator component which this script controls")]//这个脚本控制的Animator组件
         private Animator _Animator;
 
         /// <summary>[<see cref="SerializeField"/>]
@@ -41,19 +40,19 @@ namespace Animancer
             {
 #if UNITY_EDITOR
                 Editor.AnimancerEditorUtilities.SetIsInspectorExpanded(_Animator, true);
+                //Animancer编辑工具.设置为展开检查器.
                 Editor.AnimancerEditorUtilities.SetIsInspectorExpanded(value, false);
 #endif
 
-                //要阻止那个老动画师玩图形游戏似乎是不可能的
 
                 _Animator = value;
-                if (IsPlayableInitialised)
+                if (IsPlayableInitialised)//指示是否可以初始化
                     _Playable.SetOutput(value, this);
             }
         }
 
 #if UNITY_EDITOR
-        /// <summary>[Editor-Only] The name of the serialized backing field for the <see cref="Animator"/> property.</summary>
+        /// <summary>[编辑模式下有效] 序列化支持字段的名称为 <see cref="Animator"/> 属性</summary>
         string IAnimancerComponent.AnimatorFieldName { get { return "_Animator"; } }
 #endif
 
@@ -74,19 +73,19 @@ namespace Animancer
             }
         }
 
-        /// <summary>Indicates whether the <see cref="Playable"/> has been initialised.</summary>
+        /// <summary>指示 <see cref="Playable"/> 是否已经初始化.</summary>
         public bool IsPlayableInitialised { get { return _Playable != null && _Playable.IsValid; } }
 
         /************************************************************************************************************************/
 
-        /// <summary>The states managed by this component.</summary>
-        public AnimancerPlayable.StateDictionary States { get { return Playable.States; } }
+        /// <summary> 由该组件管理的状态 </summary>
+        public AnimancerPlayable.StateDictionary States { get { return Playable.States; } } //状态机
 
-        /// <summary>The layers which each manage their own set of animations.</summary>
-        public AnimancerPlayable.LayerList Layers { get { return Playable.Layers; } }
+        /// <summary> 每个层管理自己的一套动画 </summary>
+        public AnimancerPlayable.LayerList Layers { get { return Playable.Layers; } } //动画层级
 
-        /// <summary>Returns layer 0.</summary>
-        public static implicit operator AnimancerLayer(AnimancerComponent animancer)
+        /// <summary>返回0层级</summary>
+        public static implicit operator AnimancerLayer(AnimancerComponent animancer) //隐式操作返回0层级
         {
             return animancer.Playable.Layers[0];
         }
@@ -103,10 +102,10 @@ namespace Animancer
         private DisableAction _ActionOnDisable;
 
         /// <summary>[<see cref="SerializeField"/>]
-        /// Determines what happens when this component is disabled or its <see cref="GameObject"/> becomes inactive
+        /// 确定当此组件被禁用或 <see cref="GameObject"/> 变为非活动状态时会发生什么
         /// (i.e. in <see cref="OnDisable"/>).
         /// <para></para>
-        /// The default value is <see cref="DisableAction.Stop"/>.
+        /// 默认值为 <see cref="DisableAction.Stop"/>.
         /// </summary>
         public DisableAction ActionOnDisable
         {
@@ -114,48 +113,43 @@ namespace Animancer
             set { _ActionOnDisable = value; }
         }
 
-        /// <summary>Determines whether the object will be reset to its original values when disabled.</summary>
+        /// <summary>确定禁用对象时是否将重置为其原始值</summary>
         bool IAnimancerComponent.ResetOnDisable { get { return _ActionOnDisable == DisableAction.Reset; } }
 
         /// <summary>
-        /// An action to perform when disabling an <see cref="AnimancerComponent"/>. See <see cref="ActionOnDisable"/>.
+        /// 当禁用 <see cref="AnimancerComponent"/>时要执行的操作,主要看<see cref="ActionOnDisable"/>.
         /// </summary>
         public enum DisableAction
         {
             /// <summary>
-            /// Stop all animations and rewind them, but leave all animated values as they are (unlike
-            /// <see cref="Reset"/>).
+            /// 停止所有的动画并回滚它们，但是保留所有的动画值 (不同于<see cref="Reset"/>).
             /// <para></para>
-            /// Calls <see cref="Stop()"/> and <see cref="AnimancerPlayable.PauseGraph"/>.
+            /// 调用 <see cref="Stop()"/> 和<see cref="AnimancerPlayable.PauseGraph"/>.
             /// </summary>
             Stop,
 
             /// <summary>
-            /// Pause all animations in their current state so they can resume later.
+            /// 暂停当前状态的所有动画，以便稍后继续
             /// <para></para>
             /// Calls <see cref="AnimancerPlayable.PauseGraph"/>.
             /// </summary>
             Pause,
 
-            /// <summary>Keep playing while inactive.</summary>
+            /// <summary>不在活动状态时继续播放</summary>
             Continue,
 
             /// <summary>
-            /// Stop all animations, rewind them, and force the object back into its original state (often called the
-            /// bind pose).
+            /// 停止所有的动画，倒播它们，迫使对象回到它的原始状态(通常称为绑定姿态)
             /// <para></para>
-            /// WARNING: this must occur before the <see cref="UnityEngine.Animator"/> receives its <c>OnDisable</c>
-            /// call, meaning the <see cref="AnimancerComponent"/> must be above it in the Inspector or on a child
-            /// object so that <see cref="OnDisable"/> gets called first.
+            /// 警告:这必须在 <see cref="UnityEngine.Animator"/> 接收到它的OnDisable调用之前发生，
+            /// 这意味着<see cref="AnimancerComponent"/> 必须在检查器或子对象的上面，以便 <see cref="OnDisable"/> 首先被调用
             /// <para></para>
-            /// Calls <see cref="Stop()"/>, <see cref="Animator.Rebind"/>, and <see cref="AnimancerPlayable.PauseGraph"/>.
+            /// 调用 <see cref="Stop()"/>, <see cref="Animator.Rebind"/>, 和 <see cref="AnimancerPlayable.PauseGraph"/>.
             /// </summary>
             Reset,
 
             /// <summary>
-            /// Destroy the <see cref="PlayableGraph"/> and all its layers and states. This means that any layers or
-            /// states referenced by other scripts will no longer be valid so they will need to be recreated if you
-            /// want to use this object again.
+            /// 销毁及其所有层和状态。这意味着其他脚本引用的任何层或状态将不再有效，因此如果您想再次使用该对象，则需要重新创建它们
             /// <para></para>
             /// Calls <see cref="AnimancerPlayable.Destroy()"/>.
             /// </summary>
@@ -167,12 +161,11 @@ namespace Animancer
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Determines when animations are updated and which time source is used. This property is mainly a wrapper
-        /// around the <see cref="Animator.updateMode"/>.
+        /// 确定何时更新动画以及使用哪个时间源。这个属性主要是对 <see cref="Animator.updateMode"/> 的封装
         /// <para></para>
-        /// Note that changing to or from <see cref="AnimatorUpdateMode.AnimatePhysics"/> at runtime has no effect.
+        /// 注意再运行时,对 <see cref="AnimatorUpdateMode.AnimatePhysics"/> 读写是没有效果的
         /// </summary>
-        /// <exception cref="NullReferenceException">Thrown if no <see cref="Animator"/> is assigned.</exception>
+        /// <exception cref="NullReferenceException">抛出异常,如果<see cref="Animator"/> 没有被分配</exception>
         public AnimatorUpdateMode UpdateMode
         {
             get { return _Animator.updateMode; }
@@ -183,8 +176,8 @@ namespace Animancer
                 if (!IsPlayableInitialised)
                     return;
 
-                // UnscaledTime on the Animator is actually identical to Normal when using the Playables API so we need
-                // to set the graph's DirectorUpdateMode to determine how it gets its delta time.
+                //当使用Playables API时，动画器上的UnscaledTime实际上和普通的是一样的，
+                //所以我们需要设置图形的DirectorUpdateMode来确定它是如何得到时间增量的
                 _Playable.UpdateMode = value == AnimatorUpdateMode.UnscaledTime ?
                     DirectorUpdateMode.UnscaledGameTime :
                     DirectorUpdateMode.GameTime;
@@ -209,9 +202,8 @@ namespace Animancer
         /************************************************************************************************************************/
 
         /// <summary>[Editor-Only]
-        /// The <see cref="UpdateMode"/> what was first used when this script initialised.
-        /// This is used to give a warning when changing to or from <see cref="AnimatorUpdateMode.AnimatePhysics"/> at
-        /// runtime since it won't work correctly.
+        /// <see cref="UpdateMode"/> 是此脚本初始化时首次使用的内容
+        /// 当使用 <see cref="AnimatorUpdateMode.AnimatePhysics"/> 或者是从它获取信息时,它会给出一个警告，因为它不能正常工作。
         /// </summary>
         public AnimatorUpdateMode? InitialUpdateMode { get; private set; }
 
@@ -222,27 +214,27 @@ namespace Animancer
         /************************************************************************************************************************/
         #endregion
         /************************************************************************************************************************/
-        #region Animation Events
+        #region Animation Events //动画事件
         /************************************************************************************************************************/
-        // These methods are above their regular overloads so Animation Events find them first (because the others can't be used).
+        //这些方法超出了常规的重载，所以动画事件优先调用它们(因为其他方法不能使用)
         /************************************************************************************************************************/
 
-        /// <summary>Calls <see cref="Play(AnimationClip, int)"/>.</summary>
-        /// <remarks>This method is called by Animation Events.</remarks>
+        /// <summary>调用 <see cref="Play(AnimationClip, int)"/>.</summary>
+        /// <remarks>此方法由动画事件来调用.</remarks>
         private void Play(AnimationEvent animationEvent)
         {
-            var clip = (AnimationClip)animationEvent.objectReferenceParameter;
+            var clip = (AnimationClip)animationEvent.objectReferenceParameter;//对象引用参数
             var layerIndex = animationEvent.intParameter;
-            if (layerIndex < 0)
+            if (layerIndex < 0)//LayerIndex动画层级
                 Play(clip);
             else
                 Layers[layerIndex].Play(clip);
         }
 
         /// <summary>
-        /// Calls <see cref="Play(AnimationClip, int)"/> and sets the <see cref="AnimancerState.Time"/> = 0.
+        /// 调用 <see cref="Play(AnimationClip, int)"/> 设置 <see cref="AnimancerState.Time"/> = 0.
         /// </summary>
-        /// <remarks>This method is called by Animation Events.</remarks>
+        /// <remarks>此方法由动画事件来调用.</remarks>
         private void PlayFromStart(AnimationEvent animationEvent)
         {
             var clip = (AnimationClip)animationEvent.objectReferenceParameter;
@@ -253,8 +245,8 @@ namespace Animancer
                 Layers[layerIndex].Play(clip).Time = 0;
         }
 
-        /// <summary>Calls <see cref="CrossFade(AnimationClip, float, int)"/>.</summary>
-        /// <remarks>This method is called by Animation Events.</remarks>
+        /// <summary>调用 <see cref="CrossFade(AnimationClip, float, int)"/>.</summary>
+        /// <remarks>此方法由动画事件来调用.</remarks>
         private void CrossFade(AnimationEvent animationEvent)
         {
             var clip = (AnimationClip)animationEvent.objectReferenceParameter;
@@ -270,13 +262,13 @@ namespace Animancer
                 Layers[layerIndex].Play(clip, fadeDuration);
         }
 
-        /// <summary>Calls <see cref="CrossFadeFromStart(AnimationClip, float, int)"/>.</summary>
-        /// <remarks>This method is called by Animation Events.</remarks>
+        /// <summary>调用 <see cref="CrossFadeFromStart(AnimationClip, float, int)"/>.</summary>
+        /// <remarks>此方法由动画事件来调用.</remarks>
         private void CrossFadeFromStart(AnimationEvent animationEvent)
         {
             var clip = (AnimationClip)animationEvent.objectReferenceParameter;
 
-            var fadeDuration = animationEvent.floatParameter;
+            var fadeDuration = animationEvent.floatParameter;//fade Duration 淡入淡出的持续时间
             if (fadeDuration <= 0)
                 fadeDuration = AnimancerPlayable.DefaultFadeDuration;
 
@@ -287,8 +279,8 @@ namespace Animancer
                 Layers[layerIndex].Play(clip, fadeDuration, FadeMode.FromStart);
         }
 
-        /// <summary>Calls <see cref="Transition(ITransition, int)"/>.</summary>
-        /// <remarks>This method is called by Animation Events.</remarks>
+        /// <summary>调用 <see cref="Transition(ITransition, int)"/>.</summary>
+        /// <remarks>此方法由动画事件来调用.</remarks>
         private void Transition(AnimationEvent animationEvent)
         {
             var transition = (ITransition)animationEvent.objectReferenceParameter;
@@ -302,17 +294,16 @@ namespace Animancer
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Invokes the <see cref="Animancerstate.Events.OnEndCallback"/> event of the
-        /// <see cref="CurrentState"/> if it is playing the <see cref="AnimationClip"/> which triggered the event.
+        /// 如果播放指向事件的 <see cref="AnimationClip"/> ,就在 <see cref="CurrentState"/>中调用 <see cref="Animancerstate.Events.OnEndCallback"/> 
         /// <para></para>
-        /// Logs a warning if no state is registered for that animation.
+        /// 如果没有为该动画注册状态，则记录一个警告
         /// </summary>
-        /// <remarks>This method is called by Animation Events.</remarks>
+        /// <remarks>此方法由动画事件来调用.</remarks>
         private void End(AnimationEvent animationEvent)
         {
             if (_Playable == null)
             {
-                // This could only happen if another Animator triggers the event on this object somehow.
+                //只有当另一个动画器以某种方式触发该对象上的事件时，才会发生这种情况
                 Debug.LogWarning("AnimationEvent 'End' was triggered by " + animationEvent.animatorClipInfo.clip +
                     ", but the AnimancerComponent.Playable hasn't been initialised.",
                     this);
@@ -333,15 +324,14 @@ namespace Animancer
         /************************************************************************************************************************/
         #endregion
         /************************************************************************************************************************/
-        #region Initialisation
+        #region Initialisation //初始
         /************************************************************************************************************************/
 
 #if UNITY_EDITOR
-        /// <summary>[Editor-Only]
-        /// Called by the Unity Editor when this component is first added (in Edit Mode) and whenever the Reset command
-        /// is executed from its context menu.
+        /// <summary>[仅在编辑模式]
+        /// 当这个组件第一次被添加时(在编辑模式下)，以及当重置命令从它的上下文菜单中执行时，由Unity编辑器调用
         /// <para></para>
-        /// Destroys the playable if one has been initialised.
+        /// 如果已初始化，则销毁播放模式的数据。
         /// Searches for an <see cref="UnityEngine.Animator"/> on this object, or it's children or parents.
         /// Removes the <see cref="Animator.runtimeAnimatorController"/> if it finds one.
         /// <para></para>
