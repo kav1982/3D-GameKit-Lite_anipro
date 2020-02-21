@@ -56,7 +56,7 @@ namespace Animancer.Examples.Basics
             }
 
             // _Animancer.Play(_Walk.name); 也会生效,
-            // 但是如果我们要使用剪辑我们应该使用 _Animancer.Play(_Walk);
+            // 但是如果我们要使用clip我们应该使用 _Animancer.Play(_Walk);
         }
 
         /************************************************************************************************************************/

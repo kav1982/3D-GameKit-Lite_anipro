@@ -87,6 +87,7 @@ namespace Animancer.Examples.Basics
             var state = _Animancer.Play(_Action);
             state.Time = 0;
             state.Events.OnEnd = () => _Animancer.Play(_Idle);
+            //state.Events.OnEnd = public void xxx() => _Animancer.Play(_Idel);
         }
 
         /************************************************************************************************************************/

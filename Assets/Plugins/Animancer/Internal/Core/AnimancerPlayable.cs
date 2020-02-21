@@ -638,10 +638,10 @@ namespace Animancer
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Returns true if the `clip` is currently being played by at least one state in the specified layer.
+        /// 如果当前指定层中至少有一个状态正在播放“clip”，则返回true.
         /// <para></para>
-        /// This method is inefficient because it searches through every state to find any that are playing the `clip`,
-        /// unlike <see cref="IsPlaying(object)"/> which only checks the state registered using the specified key.
+        /// 这个方法效率很低，因为它会搜索每个状态来找到任何正在播放“clip”的状态，
+        /// 不像 <see cref="IsPlaying(object)"/> 它只检查指定key注册的状态.
         /// </summary>
         public bool IsPlayingClip(AnimationClip clip)
         {

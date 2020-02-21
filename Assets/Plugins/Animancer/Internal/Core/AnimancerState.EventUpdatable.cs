@@ -6,26 +6,23 @@ using UnityEngine;
 
 namespace Animancer
 {
-    partial class AnimancerState
+    partial class AnimancerState //partial class 将类、结构或接口的定义拆分到两个或多个源文件中
     {
         /************************************************************************************************************************/
 
         /// <summary>
-        /// The <see cref="IUpdatable"/> that manages the events of this state.
+        /// <see cref="IUpdatable"/> 管理此事件的状态
         /// <para></para>
-        /// This field is null by default, acquires its reference from an <see cref="ObjectPool"/> when accessed, and
-        /// if it contains no events at the end of an update it releases the reference back to the pool.
+        /// 该字段默认为null，在访问时从获取其引用，如果在更新结束时不包含事件，则将引用释放回池中
         /// </summary>
         private EventUpdatable _EventUpdatable;
 
         /************************************************************************************************************************/
 
         /// <summary>
-        /// A list of <see cref="AnimancerEvent"/>s that will occur while this state plays as well as one that
-        /// specifically defines when this state ends.
+        /// 一个关于<see cref="AnimancerEvent"/>的列表,该列表将在此状态运行时发生，也将在此状态结束时具体定义
         /// <para></para>
-        /// Animancer Lite does not allow the use of events in a runtime build, except for
-        /// <see cref="AnimancerEvent.Sequence.OnEnd"/>.
+        /// Animancer Lite不允许在运行时构建中使用事件，除非 <see cref="AnimancerEvent.Sequence.OnEnd"/>.
         /// </summary>
         public AnimancerEvent.Sequence Events
         {
@@ -51,8 +48,7 @@ namespace Animancer
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Indicates whether this state currently has an <see cref="AnimancerEvent.Sequence"/> (since accessing the
-        /// <see cref="Events"/> would automatically get one from the <see cref="ObjectPool"/>).
+        /// 指示此状态当前是否有一个 <see cref="AnimancerEvent.Sequence"/> (当访问<see cref="Events"/>时会自动获得一个<see cref="ObjectPool"/>).
         /// </summary>
         public bool HasEvents { get { return _EventUpdatable != null; } }
 
@@ -121,7 +117,7 @@ namespace Animancer
             /************************************************************************************************************************/
 
             /// <summary>
-            /// Returns this <see cref="EventUpdatable"/> to the <see cref="ObjectPool"/>.
+            /// 将此 <see cref="EventUpdatable"/> 返回到 <see cref="ObjectPool"/>.
             /// </summary>
             private void Release()
             {

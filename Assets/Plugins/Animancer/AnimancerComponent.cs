@@ -331,27 +331,25 @@ namespace Animancer
         /// <summary>[仅在编辑模式]
         /// 当这个组件第一次被添加时(在编辑模式下)，以及当重置命令从它的上下文菜单中执行时，由Unity编辑器调用
         /// <para></para>
-        /// 如果已初始化，则销毁播放模式的数据。
-        /// Searches for an <see cref="UnityEngine.Animator"/> on this object, or it's children or parents.
-        /// Removes the <see cref="Animator.runtimeAnimatorController"/> if it finds one.
+        /// 如果已初始化，则销毁播放模式的数据
+        /// 在此对象或其子对象或父对象上搜索<see cref="UnityEngine.Animator"/> 
+        /// 删除 <see cref="Animator.runtimeAnimatorController"/> 如果找到的话
         /// <para></para>
-        /// This method also prevents you from adding multiple copies of this component to a single object. Doing so
-        /// will destroy the new one immediately and change the old one's type to match the new one, allowing you to
-        /// change the type without losing the values of any serialized fields they share.
+        /// 此方法还可以防止将此组件的多个副本添加到单个对象。这样做将立即销毁新字段并更改旧字段的类型以匹配新字段，
+        /// 从而允许您更改类型而不会丢失它们共享的任何序列化字段的值
         /// </summary>
         protected virtual void Reset()
         {
             OnDestroy();
 
-            _Animator = Editor.AnimancerEditorUtilities.GetComponentInHierarchy<Animator>(gameObject);
+            _Animator = Editor.AnimancerEditorUtilities.GetComponentInHierarchy<Animator>(gameObject);//获取层次结构中的组件
 
             if (_Animator != null)
             {
                 _Animator.runtimeAnimatorController = null;
                 Editor.AnimancerEditorUtilities.SetIsInspectorExpanded(_Animator, false);
 
-                // Collapse the Animator property because the custom Inspector uses that to control whether the
-                // Animator's Inspector is expanded.
+                // 折叠Animator属性，因为自定义检查器使用它来控制是否展开Animator的检查器
                 using (var serializedObject = new UnityEditor.SerializedObject(this))
                 {
                     var property = serializedObject.FindProperty("_Animator");
@@ -367,9 +365,9 @@ namespace Animancer
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Called by Unity when this component becomes enabled and active.
+        /// 当此组件启用并激活时，由Unity调用
         /// <para></para>
-        /// Ensures that the <see cref="PlayableGraph"/> is playing.
+        /// 确保 <see cref="PlayableGraph"/> 在运行状态
         /// </summary>
         protected virtual void OnEnable()
         {
@@ -378,8 +376,7 @@ namespace Animancer
         }
 
         /// <summary>
-        /// Called by Unity when this component becomes disabled or inactive. Acts according to the
-        /// <see cref="ActionOnDisable"/>.
+        /// 当此组件被禁用或不活动时. 由Unity根据<see cref="ActionOnDisable"/>调用
         /// </summary>
         protected virtual void OnDisable()
         {
@@ -426,7 +423,7 @@ namespace Animancer
 
         /************************************************************************************************************************/
 
-        /// <summary>Creates a new <see cref="AnimancerPlayable"/> if it doesn't already exist.</summary>
+        /// <summary>创建一个新的<see cref="AnimancerPlayable"/> 如果它不存在.</summary>
         private void InitialisePlayable()
         {
             if (IsPlayableInitialised)
@@ -454,8 +451,8 @@ namespace Animancer
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Called by Unity when this component is destroyed.
-        /// Ensures that the <see cref="Playable"/> is properly cleaned up.
+        /// 当这个组件被销毁时被Unity调用
+        /// 确保<see cref="Playable"/>被正确的清理
         /// </summary>
         protected virtual void OnDestroy()
         {
@@ -470,7 +467,7 @@ namespace Animancer
 
 #if UNITY_EDITOR
         /// <summary>[Editor-Only]
-        /// Ensures that the <see cref="PlayableGraph"/> is destroyed.
+        /// 确保<see cref="PlayableGraph"/>被销毁
         /// </summary>
         ~AnimancerComponent()
         {
@@ -482,13 +479,12 @@ namespace Animancer
         /************************************************************************************************************************/
         #endregion
         /************************************************************************************************************************/
-        #region Play Management
+        #region Play Management //播放管理
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Returns the `clip` itself. This method is used to determine the dictionary key to use for an animation
-        /// when none is specified by the user, such as in <see cref="Play(AnimationClip)"/>. It can be overridden by
-        /// child classes to use something else as the key.
+        /// 返回“clip”本身。此方法用于确定当用户未指定动画时,如<see cref="Play(AnimationClip)"/>使用的字典key.
+        /// 它可以被子类覆盖，以使用其他东西作为key.
         /// </summary>
         public virtual object GetKey(AnimationClip clip)
         {
@@ -498,10 +494,10 @@ namespace Animancer
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Stops all other animations, plays the `clip`, and returns its state.
+        /// 停止所有其他动画，播放“clip”，并返回其状态
         /// <para></para>
-        /// The animation will continue playing from its current <see cref="AnimancerState.Time"/>.
-        /// To restart it from the beginning you can use <c>...Play(clip, layerIndex).Time = 0;</c>.
+        /// 动画将从当前的 <see cref="AnimancerState.Time"/> 继续播放
+        /// 要从头开始启动它,可以使用 <c>...播放(clip, layerIndex).Time = 0;</c>.
         /// </summary>
         public AnimancerState Play(AnimationClip clip)
         {
@@ -509,10 +505,10 @@ namespace Animancer
         }
 
         /// <summary>
-        /// Stops all other animations, plays the `state`, and returns it.
+        /// 停止所有其他动画，播放“state”，并返回它
         /// <para></para>
-        /// The animation will continue playing from its current <see cref="AnimancerState.Time"/>.
-        /// To restart it from the beginning you can use <c>...Play(state).Time = 0;</c>.
+        /// 动画将从当前的 <see cref="AnimancerState.Time"/>继续播放
+        /// 要从头开始启动它,可以使用 <c>...Play(state).Time = 0;</c>.
         /// </summary>
         public AnimancerState Play(AnimancerState state)
         {
@@ -520,9 +516,9 @@ namespace Animancer
         }
 
         /// <summary>
-        /// Creates a state for the `transition` if it didn't already exist, then calls
-        /// <see cref="Play(AnimancerState)"/> or <see cref="Play(AnimancerState, float, FadeMode)"/>
-        /// depending on <see cref="ITransition.CrossFadeFromStart"/>.
+        /// 为`transition` 创建一个状态(如果它不存在),然后调用
+        /// <see cref="Play(AnimancerState)"/> 或 <see cref="Play(AnimancerState, float, FadeMode)"/>
+        /// 取决于<see cref="ITransition.CrossFadeFromStart"/>.
         /// </summary>
         public AnimancerState Play(ITransition transition)
         {
@@ -530,11 +526,11 @@ namespace Animancer
         }
 
         /// <summary>
-        /// Stops all other animations, plays the animation registered with the `key`, and returns that
-        /// state. If no state is registered with the `key`, this method does nothing and returns null.
+        /// 停止所有其他动画，播放用'key'注册的动画，并返回该动画状态。
+        /// 如果没有向'key'注册任何状态，则此方法不执行任何操作并返回null。
         /// <para></para>
-        /// The animation will continue playing from its current <see cref="AnimancerState.Time"/>.
-        /// To restart it from the beginning you can use <c>...Play(key).Time = 0;</c>.
+        /// 动画将从当前的 <see cref="AnimancerState.Time"/>继续播放
+        /// 要从头开始启动它,可以使用 <c>...Play(state).Time = 0;</c>.
         /// </summary>
         public AnimancerState Play(object key)
         {
@@ -544,16 +540,13 @@ namespace Animancer
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Starts fading in the `clip` over the course of the `fadeDuration` while fading out all others in the same
-        /// layer. Returns its state.
+        /// 在fadeDuration过程中，开始淡出剪辑，同时淡出同一层中的所有其它元素,返回它的状态
         /// <para></para>
-        /// If the `state` was already playing and fading in with less time remaining than the `fadeDuration`, this
-        /// method will allow it to complete the existing fade rather than starting a slower one.
+        /// 如果`state` 并且淡出的时间比 `fadeDuration`少, 这种方法将允许它完成现有的淡出，而不是开始一个较慢的淡出。
         /// <para></para>
-        /// If the layer currently has 0 <see cref="AnimancerNode.Weight"/>, this method will fade in the layer itself
-        /// and simply <see cref="AnimancerState.Play(AnimationClip)"/> the `clip`.
+        /// 如果当前图层有0 <see cref="AnimancerNode.Weight"/>权重, 这个方法将在层本身中消失，并简单地<see cref="AnimancerState.Play(AnimationClip)"/> 片段.
         /// <para></para>
-        /// Animancer Lite only allows the default `fadeDuration` (0.25 seconds) in a runtime build.
+        /// Animancer Lite在运行时版本中只允许默认的“fadeDuration”(0.25秒)
         /// </summary>
         public AnimancerState Play(AnimationClip clip, float fadeDuration, FadeMode mode = FadeMode.FixedSpeed)
         {
@@ -561,16 +554,14 @@ namespace Animancer
         }
 
         /// <summary>
-        /// Starts fading in the `state` over the course of the `fadeDuration` while fading out all others in the same
-        /// layer. Returns the `state`.
+        /// 在“fadeDuration”的过程中，开始淡出“state”，同时淡出同一层中的其他所有对象。返回“状态”
         /// <para></para>
-        /// If the `state` was already playing and fading in with less time remaining than the `fadeDuration`, this
-        /// method will allow it to complete the existing fade rather than starting a slower one.
+        /// 如果“状态”已经在播放并且淡出的时间比“淡出”的时间少，这种方法将允许它完成现有的淡出，而不是开始一个较慢的淡出
         /// <para></para>
-        /// If the layer currently has 0 <see cref="AnimancerNode.Weight"/>, this method will fade in the layer itself
-        /// and simply <see cref="AnimancerState.Play(AnimancerState)"/> the `state`.
+        /// 如果当前层的<see cref="AnimancerNode.Weight"/>是0, 则该方法将在层本身中淡出，
+        /// 并简单地 <see cref="AnimancerState.Play(AnimancerState)"/> `state`.
         /// <para></para>
-        /// Animancer Lite only allows the default `fadeDuration` (0.25 seconds) in a runtime build.
+        /// 在运行时版本中，nimancer Lite只允许默认的“fadeDuration”(0.25秒)
         /// </summary>
         public AnimancerState Play(AnimancerState state, float fadeDuration, FadeMode mode = FadeMode.FixedSpeed)
         {
@@ -578,9 +569,9 @@ namespace Animancer
         }
 
         /// <summary>
-        /// Creates a state for the `transition` if it didn't already exist, then calls
-        /// <see cref="Play(AnimancerState)"/> or <see cref="Play(AnimancerState, float, FadeMode)"/>
-        /// depending on <see cref="ITransition.CrossFadeFromStart"/>.
+        /// 为`transition`创建一个状态(如果它还不存在)，然后调用
+        /// <see cref="Play(AnimancerState)"/> 或者 <see cref="Play(AnimancerState, float, FadeMode)"/>
+        /// 依赖于 <see cref="ITransition.CrossFadeFromStart"/>.
         /// </summary>
         public AnimancerState Play(ITransition transition, float fadeDuration, FadeMode mode = FadeMode.FixedSpeed)
         {
@@ -588,16 +579,16 @@ namespace Animancer
         }
 
         /// <summary>
-        /// Starts fading in the animation registered with the `key` over the course of the `fadeDuration` while fading
-        /// out all others in the same layer. Returns the animation's state (or null if none was registered).
+        /// 在' fadeDuration '过程中，在' key '注册的动画中开始淡出，同时淡出同一层中的所有其他对象。
+        /// 返回动画的状态(如果没有注册，则返回null)。
         /// <para></para>
-        /// If the state was already playing and fading in with less time remaining than the `fadeDuration`, this
-        /// method will allow it to complete the existing fade rather than starting a slower one.
+        /// 如果状态已经在播放，并且淡出的时间比fadeDuration剩下的时间更少，
+        /// 那么这个方法将允许它完成现有的fade而不是开始一个更慢的fade
         /// <para></para>
-        /// If the layer currently has 0 <see cref="AnimancerNode.Weight"/>, this method will fade in the layer itself
-        /// and simply <see cref="AnimancerState.Play(AnimancerState)"/> the state.
+        /// 如果该层的<see cref="AnimancerNode.Weight"/>是0, 这个方法会在层中自己淡出
+        /// 简单的播放 <see cref="AnimancerState.Play(AnimancerState)"/> 状态.
         /// <para></para>
-        /// Animancer Lite only allows the default `fadeDuration` (0.25 seconds) in a runtime build.
+        /// Animancer Lite在运行时版本中只允许默认的“fadeDuration”(0.25秒)。
         /// </summary>
         public AnimancerState Play(object key, float fadeDuration, FadeMode mode = FadeMode.FixedSpeed)
         {
@@ -607,7 +598,7 @@ namespace Animancer
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Gets the state associated with the `clip`, stops and rewinds it to the start, then returns it.
+        /// 获取与“clip”关联的状态，停止并将其重绕到开始处，然后返回
         /// </summary>
         public AnimancerState Stop(AnimationClip clip)
         {
@@ -615,8 +606,7 @@ namespace Animancer
         }
 
         /// <summary>
-        /// Gets the state registered with the <see cref="IHasKey.Key"/>, stops and rewinds it to the start, then
-        /// returns it.
+        /// 获取使用<see cref="IHasKey.Key"/>注册的状态，停止并回滚到开始，然后返回
         /// </summary>
         public AnimancerState Stop(IHasKey hasKey)
         {
@@ -627,7 +617,7 @@ namespace Animancer
         }
 
         /// <summary>
-        /// Gets the state associated with the `key`, stops and rewinds it to the start, then returns it.
+        /// 获取与“key”关联的状态，停止并将其重绕到开始处，然后返回
         /// </summary>
         public AnimancerState Stop(object key)
         {
@@ -638,7 +628,7 @@ namespace Animancer
         }
 
         /// <summary>
-        /// Stops all animations and rewinds them to the start.
+        /// 停止所有的动画并将它们倒回开始
         /// </summary>
         public void Stop()
         {
@@ -649,9 +639,9 @@ namespace Animancer
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Returns true if a state is registered for the `clip` and it is currently playing.
+        /// 如果为“clip”注册了状态，并且当前正在播放，则返回true.
         /// <para></para>
-        /// The actual dictionary key is determined using <see cref="GetKey"/>.
+        /// 实际的字典key是用<see cref="GetKey"/>确定的
         /// </summary>
         public bool IsPlaying(AnimationClip clip)
         {
@@ -659,7 +649,7 @@ namespace Animancer
         }
 
         /// <summary>
-        /// Returns true if a state is registered with the <see cref="IHasKey.Key"/> and it is currently playing.
+        /// 如果状态是用<see cref="IHasKey.Key"/>注册的,并且当前正在播放,则返回true.
         /// </summary>
         public bool IsPlaying(IHasKey hasKey)
         {
@@ -670,7 +660,7 @@ namespace Animancer
         }
 
         /// <summary>
-        /// Returns true if a state is registered with the `key` and it is currently playing.
+        /// 如果状态是用“key”注册的,并且当前正在播放,则返回true.
         /// </summary>
         public bool IsPlaying(object key)
         {
@@ -681,7 +671,7 @@ namespace Animancer
         }
 
         /// <summary>
-        /// Returns true if at least one animation is being played.
+        /// 如果正在播放至少一个动画，则返回true.
         /// </summary>
         public bool IsPlaying()
         {
@@ -694,10 +684,10 @@ namespace Animancer
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Returns true if the `clip` is currently being played by at least one state.
+        /// 如果' clip '当前由至少一个状态播放，则返回true.
         /// <para></para>
-        /// This method is inefficient because it searches through every state to find any that are playing the `clip`,
-        /// unlike <see cref="IsPlaying(AnimationClip)"/> which only checks the state registered using the `clip`s key.
+        /// 这个方法效率很低，因为它会搜索每个状态来找到任何正在播放“clip”的状态,
+        /// 不像 <see cref="IsPlaying(AnimationClip)"/> 只检查状态注册使用`clip`的key.
         /// </summary>
         public bool IsPlayingClip(AnimationClip clip)
         {
@@ -710,7 +700,7 @@ namespace Animancer
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Evaluates all of the currently playing animations to apply their states to the animated objects.
+        /// 计算所有当前正在播放的动画，以将它们的状态应用于动画对象.
         /// </summary>
         public void Evaluate()
         {
@@ -718,8 +708,7 @@ namespace Animancer
         }
 
         /// <summary>
-        /// Advances all currently playing animations by the specified amount of time (in seconds) and evaluates the
-        /// graph to apply their states to the animated objects.
+        /// 按照指定的时间(秒)推进当前正在播放的所有动画，并计算图形以将其状态应用于动画对象.
         /// </summary>
         public void Evaluate(float deltaTime)
         {
@@ -730,13 +719,12 @@ namespace Animancer
         #region Key Error Methods
 #if UNITY_EDITOR
         /************************************************************************************************************************/
-        // These are overloads of other methods that take a System.Object key to ensure the user doesn't try to use an
-        // AnimancerState as a key, since the whole point of a key is to identify a state in the first place.
+        // 这些是占用系统的其他方法的重载对象key，以确保用户不会尝试使用AnimancerState作为key，因为key的关键是首先标识一个状态.
         /************************************************************************************************************************/
 
         /// <summary>[Warning]
-        /// You should not use an <see cref="AnimancerState"/> as a key.
-        /// Just call <see cref="AnimancerState.Stop"/>.
+        /// 你不能使用 <see cref="AnimancerState"/> 作为一个key.
+        /// 使用 <see cref="AnimancerState.Stop"/>即可.
         /// </summary>
         [Obsolete("You should not use an AnimancerState as a key. Just call AnimancerState.Stop().", true)]
         public AnimancerState Stop(AnimancerState key)
@@ -746,8 +734,8 @@ namespace Animancer
         }
 
         /// <summary>[Warning]
-        /// You should not use an <see cref="AnimancerState"/> as a key.
-        /// Just check <see cref="AnimancerState.IsPlaying"/>.
+        /// 你不能使用一个 <see cref="AnimancerState"/> 作为一个 key.
+        /// 只需检查 <see cref="AnimancerState.IsPlaying"/>.
         /// </summary>
         [Obsolete("You should not use an AnimancerState as a key. Just check AnimancerState.IsPlaying.", true)]
         public bool IsPlaying(AnimancerState key)
@@ -761,13 +749,13 @@ namespace Animancer
         /************************************************************************************************************************/
         #endregion
         /************************************************************************************************************************/
-        #region Enumeration
+        #region Enumeration //枚举和协程
         /************************************************************************************************************************/
-        // IEnumerable for 'foreach' statements.
+        // IEnumerable for 'foreach'语句.
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Returns an enumerator that will iterate through all states in each layer (not states inside mixers).
+        /// 返回一个枚举器，它将遍历每一层中的所有状态(而不是混合器中的状态).
         /// </summary>
         public IEnumerator<AnimancerState> GetEnumerator()
         {
@@ -781,11 +769,11 @@ namespace Animancer
         IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }
 
         /************************************************************************************************************************/
-        // IEnumerator for yielding in a coroutine to wait until all animations have stopped.
+        // 在协同程序中生成的IEnumerator，等待所有的动画停止.
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Determines if any animations are still playing so this object can be used as a custom yield instruction.
+        /// 确定是否有动画仍在播放，因此此对象可以用作自定义的yield指令.
         /// </summary>
         bool IEnumerator.MoveNext()
         {
@@ -795,13 +783,13 @@ namespace Animancer
             return ((IEnumerator)_Playable).MoveNext();
         }
 
-        /// <summary>Returns null.</summary>
+        /// <summary>返回 null.</summary>
         object IEnumerator.Current { get { return null; } }
 
-#pragma warning disable UNT0006 // Incorrect message signature.
-        /// <summary>Does nothing.</summary>
+#pragma warning disable UNT0006 // 错误的消息签名.
+        /// <summary>什么也不做.</summary>
         void IEnumerator.Reset() { }
-#pragma warning restore UNT0006 // Incorrect message signature.
+#pragma warning restore UNT0006 // 错误的消息签名.
 
         /************************************************************************************************************************/
 
@@ -822,9 +810,9 @@ namespace Animancer
         }
 
         /// <summary>[<see cref="IAnimationClipCollection"/>]
-        /// Gathers all the animations in the <see cref="Playable"/>.
+        /// 在<see cref="Playable"/>中收集所有的动画.
         /// <para></para>
-        /// In the Unity Editor this method also gathers animations from other components on parent and child objects.
+        /// 在Unity编辑器中，这个方法也从父对象和子对象的其他组件中收集动画.
         /// </summary>
         public virtual void GatherAnimationClips(ICollection<AnimationClip> clips)
         {
