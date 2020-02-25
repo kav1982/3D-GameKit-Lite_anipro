@@ -11,10 +11,9 @@ using Object = UnityEngine.Object;
 namespace Animancer
 {
     /// <summary>
-    /// A <see cref="PlayableBehaviour"/> which can be used as a substitute for the
-    /// <see cref="RuntimeAnimatorController"/> normally used to control an <see cref="Animator"/>.
+    /// 一个<see cref="PlayableBehaviour"/> 可以用来代替 <see cref="RuntimeAnimatorController"/> 通常用于控制 <see cref="Animator"/>.
     /// <para></para>
-    /// This class can be used as a custom yield instruction to wait until all animations finish playing.
+    /// 这个类可以作为一个自定义的yield指令来等待，直到所有的动画完成播放
     /// </summary>
     public sealed partial class AnimancerPlayable : PlayableBehaviour,
         IEnumerator, IPlayableWrapper, IAnimationClipCollection
@@ -24,19 +23,19 @@ namespace Animancer
         /************************************************************************************************************************/
 
         /// <summary>
-        /// The fade duration for any of the CrossFade methods to use if the caller doesn't specify.
+        /// 如果调用者没有指定要使用的任何交叉淡出方法的淡出持续时间,则指定一个默认的时间.
         /// </summary>
         public const float DefaultFadeDuration = 0.25f;
 
         /************************************************************************************************************************/
 
-        /// <summary>[Internal] The <see cref="PlayableGraph"/> containing this <see cref="AnimancerPlayable"/>.</summary>
+        /// <summary>[内部] <see cref="PlayableGraph"/> 包含这个 <see cref="AnimancerPlayable"/>.</summary>
         internal PlayableGraph _Graph;
 
-        /// <summary>[Internal] The <see cref="Playable"/> connected to the <see cref="PlayableGraph"/> output.</summary>
+        /// <summary>[内部] The <see cref="Playable"/> 连接到 <see cref="PlayableGraph"/> 输出</summary>
         internal Playable _RootPlayable;
 
-        /// <summary>[Internal] The <see cref="Playable"/> which layers connect to.</summary>
+        /// <summary>[Internal] 连接到<see cref="Playable"/> 的层.</summary>
         internal Playable _LayerMixer;
 
         /// <summary>[Internal] The <see cref="Playable"/> which layers connect to.</summary>
@@ -46,17 +45,16 @@ namespace Animancer
         IPlayableWrapper IPlayableWrapper.Parent { get { return null; } }
 
         /************************************************************************************************************************/
-        // These collections can not be readonly because when Unity clones the Template it copies the memory without running the
-        // field initialisers on the new clone so everything would be referencing the same collections.
+        // 这些集合不能被读取，因为当Unity克隆模板时，它复制了内存，而没有在新的克隆上运行字段初始化器，所以所有的东西都会引用相同的集合
         /************************************************************************************************************************/
 
-        /// <summary>[Pro-Only] The layers which each manage their own set of animations.</summary>
+        /// <summary>[Pro-Only] 每个层管理自己的一套动画.</summary>
         public LayerList Layers { get; private set; }
 
-        /// <summary>The states managed by this playable.</summary>
+        /// <summary>由这个播放器管理的状态.</summary>
         public StateDictionary States { get; private set; }
 
-        /// <summary>All of the nodes that need to be updated.</summary>
+        /// <summary>需要更新的所有节点.</summary>
         private Key.KeyedList<AnimancerNode> _DirtyNodes;
 
         /// <summary>All of the objects that need to be updated early.</summary>
