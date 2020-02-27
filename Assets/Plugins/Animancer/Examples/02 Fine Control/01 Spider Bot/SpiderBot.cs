@@ -71,7 +71,7 @@ namespace Animancer.Examples.FineControl
 
                     var state = _Animancer.Play(_Sleep);
 
-                    // 如果它已经超过了最后一帧，那就跳到最后一帧，因为它正在回放。
+                    // 如果它已经超过了最后一帧，那就跳到最后一帧，因为它正在回放,
                     // 否则就只能从当前时间倒放。
                     if (state.NormalizedTime > 1)
                         state.NormalizedTime = 1;

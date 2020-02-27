@@ -63,13 +63,13 @@ namespace Animancer.Examples.Basics
 
         // Called by a UI Button.
         /// <summary>
-        /// Creates a state for the walk animation so that <see cref="PlayWalk"/> can play it.
+        /// 为walk动画创建一个状态，以便<see cref="PlayWalk"/> 可以播放它
         /// </summary>
         /// <remarks>
         /// //多次调用该方法将抛出 <see cref="ArgumentException(参数异常)"/> 因为一个状态已经存在，它试图使用的key(动画名)已经存在
         /// <para></para>
         /// 如果我们想允许重复调用，我们可以使用 <see cref="AnimancerLayer.GetOrCreateState(AnimationClip, bool)"/> 来代替，
-        /// 这将在第一次创建一个状态，然后在以后每次都返回相同的状态。
+        /// 这样将在第一次创建一个状态，然后在以后每次都返回相同的状态。
         /// <para></para>
         ///如果我们想要为同一个动画创建多个状态，我们必须使用可选的‘key’参数来为每个状态指定不同的键。
         /// </remarks>
