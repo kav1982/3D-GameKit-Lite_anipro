@@ -11,21 +11,20 @@ namespace Animancer
     /// <summary>Plays a single <see cref="AnimationClip"/> on startup.</summary>
     [AddComponentMenu(Strings.MenuPrefix + "Solo Animation")]
     [HelpURL(Strings.APIDocumentationURL + "/SoloAnimation")]
-    [DefaultExecutionOrder(-5000)]// 在使用此组件之前进行初始化
+    [DefaultExecutionOrder(-5000)]//在使用此组件之前进行初始化
     public sealed class SoloAnimation : MonoBehaviour, IAnimationClipSource
     {
         /************************************************************************************************************************/
         #region Fields and Properties
         /************************************************************************************************************************/
 
-        [SerializeField, Tooltip("The Animator component which this script controls")]
+        [SerializeField, Tooltip("这个脚本控制的Animator组件")]
         private Animator _Animator;
 
         /// <summary>[<see cref="SerializeField"/>]
-        /// The <see cref="UnityEngine.Animator"/> component which this script controls.
+        /// 这个脚本控制的组件<see cref="UnityEngine.Animator"/> 
         /// <para></para>
-        /// If you need to set this value at runtime you are likely better off using a proper
-        /// <see cref="AnimancerComponent"/>.
+        /// 如果你需要在运行时设置这个值，你最好使用合适的 <see cref="AnimancerComponent"/>.
         /// </summary>
         public Animator Animator
         {
@@ -39,14 +38,13 @@ namespace Animancer
 
         /************************************************************************************************************************/
 
-        [SerializeField, Tooltip("The AnimationClip which will be played by OnEnable")]
+        [SerializeField, Tooltip("将由OnEnable播放的动画片段")]
         private AnimationClip _Clip;
 
         /// <summary>[<see cref="SerializeField"/>]
-        /// The <see cref="AnimationClip"/> which will be played by <see cref="OnEnable"/>.
+        /// <see cref="AnimationClip"/> 将由 <see cref="OnEnable"/> 播放.
         /// <para></para>
-        /// If you need to set this value at runtime you are likely better off using a proper
-        /// <see cref="AnimancerComponent"/>.
+        /// 如果您需要在运行时设置此值，您最好使用适当的 <see cref="AnimancerComponent"/>.
         /// </summary>
         public AnimationClip Clip
         {
@@ -62,15 +60,14 @@ namespace Animancer
 
 #if UNITY_2018_1_OR_NEWER
         /// <summary>
-        /// If true, disabling this object will stop and rewind the animation. Otherwise it will simply be paused
-        /// and will resume from its current state when it is re-enabled.
+        /// 如果为 true，禁用此对象将停止并重新播放动画.否则它将被暂停,并在重新启用时从当前状态恢复.
         /// <para></para>
-        /// The default value is true.
+        /// 默认值为true。
         /// <para></para>
-        /// This property wraps <see cref="Animator.keepAnimatorControllerStateOnDisable"/> and inverts its value.
-        /// The value is serialized by the <see cref="UnityEngine.Animator"/>.
+        /// 此属性封装在 <see cref="Animator.keepAnimatorControllerStateOnDisable"/> 并且反转它的值
+        /// 该值由 <see cref="UnityEngine.Animator"/>序列化.
         /// <para></para>
-        /// It requires Unity 2018.1 or newer.
+        /// 需要 Unity 2018.1 或者更新的版本.
         /// </summary>
         public bool StopOnDisable
         {
@@ -82,12 +79,12 @@ namespace Animancer
         /************************************************************************************************************************/
 
         /// <summary>
-        /// The <see cref="PlayableGraph"/> being used to play the <see cref="Clip"/>.
+        /// <see cref="PlayableGraph"/> 被用来播放 <see cref="Clip"/>.
         /// </summary>
         private PlayableGraph _Graph;
 
         /// <summary>
-        /// The <see cref="AnimationClipPlayable"/> being used to play the <see cref="Clip"/>.
+        /// <see cref="AnimationClipPlayable"/> 被用来播放 <see cref="Clip"/>.
         /// </summary>
         private AnimationClipPlayable _Playable;
 
@@ -96,7 +93,7 @@ namespace Animancer
         private bool _IsPlaying;
 
         /// <summary>
-        /// Indicates whether the animation is playing (true) or paused (false).
+        /// 指示动画是否正在播放(true)或暂停(false).
         /// </summary>
         public bool IsPlaying
         {
@@ -117,13 +114,13 @@ namespace Animancer
 
         /************************************************************************************************************************/
 
-        [SerializeField, Tooltip("The speed at which the animation plays (default 1)")]
+        [SerializeField, Tooltip("动画播放的速度(默认1)")]
         private float _Speed = 1;
 
         /// <summary>[<see cref="SerializeField"/>]
-        /// The speed at which the animation is playing (default 1).
+        /// 动画播放的速度(默认1)
         /// </summary>
-        /// <exception cref="ArgumentException">Thrown if this component is not yet <see cref="Awake"/>.</exception>
+        /// <exception cref="ArgumentException">被抛出, 如果该组件尚未 <see cref="Awake"/>.</exception>
         public float Speed
         {
             get { return _Speed; }
@@ -141,12 +138,11 @@ namespace Animancer
         private bool _FootIK;
 
         /// <summary>[<see cref="SerializeField"/>]
-        /// Determines whether Foot IK will be applied to the model (if it is Humanoid).
+        /// 决定脚IK是否将应用于模型(如果它是类人的).
         /// <para></para>
-        /// The developers of Unity have states that they believe it looks better with this enabled, but more often
-        /// than not it just makes the legs end up in a slightly different pose to what the animator intended.
+        /// Unity的开发者表示，他们相信在启用了这个功能后，它看起来会更好，但通常情况下，它只是让腿摆出了与动画师想要的稍微不同的姿势.
         /// </summary>
-        /// <exception cref="ArgumentException">Thrown if this component is not yet <see cref="Awake"/>.</exception>
+        /// <exception cref="ArgumentException">被抛出,如果这个组件还没有 <see cref="Awake"/>.</exception>
         public bool FootIK
         {
             get { return _FootIK; }
@@ -160,15 +156,15 @@ namespace Animancer
         /************************************************************************************************************************/
 
         /// <summary>
-        /// The number of seconds that have passed since the start of the animation.
+        /// 动画开始后经过的秒数.
         /// </summary>
-        /// <exception cref="ArgumentException">Thrown if this component is not yet <see cref="Awake"/>.</exception>
+        /// <exception cref="ArgumentException">被抛出,如果这个组件还没有 <see cref="Awake"/>.</exception>
         public float Time
         {
             get { return (float)_Playable.GetTime(); }
             set
             {
-                // We need to call SetTime twice to ensure that animation events aren't triggered incorrectly.
+                // 我们需要调用两次SetTime以确保动画事件正确地触发.
                 _Playable.SetTime(value);
                 _Playable.SetTime(value);
 
@@ -177,17 +173,13 @@ namespace Animancer
         }
 
         /// <summary>
-        /// The <see cref="Time"/> of this state as a portion of the <see cref="AnimationClip.length"/>, meaning the
-        /// value goes from 0 to 1 as it plays from start to end, regardless of how long that actually takes.
+        /// 该状态的 <see cref="Time"/> 是 <see cref="AnimationClip.length"/>的一部分, 这意味着该值在从头到尾播放时从0到1，不管实际需要多长时间.
         /// <para></para>
-        /// This value will continue increasing after the animation passes the end of its length and it will either
-        /// freeze in place or start again from the beginning according to whether it is looping or not.
+        /// 这个值将在动画经过其长度的末尾之后继续增加，并且根据其是否循环，其将冻结在适当的位置或从头开始重新开始.
         /// <para></para>
-        /// The fractional part of the value (<c>NormalizedTime % 1</c>) is the percentage (0-1) of progress in the
-        /// current loop while the integer part (<c>(int)NormalizedTime</c>) is the number of times the animation has
-        /// been looped.
+        /// 数值的小数部分(NormalizedTime % 1)是当前循环的进度百分比(0-1)，整数部分((int)NormalizedTime)是动画循环的次数.
         /// </summary>
-        /// <exception cref="ArgumentException">Thrown if this component is not yet <see cref="Awake"/>.</exception>
+         /// <exception cref="ArgumentException">被抛出,如果这个组件还没有 <see cref="Awake"/>.</exception>
         public float NormalizedTime
         {
             get { return Time / _Clip.length; }
@@ -196,7 +188,7 @@ namespace Animancer
 
         /************************************************************************************************************************/
 
-        /// <summary>Indicates whether the <see cref="PlayableGraph"/> is valid.</summary>
+        /// <summary>指示 <see cref="PlayableGraph"/> 是否有效</summary>
         public bool IsInitialised { get { return _Graph.IsValid(); } }
 
         /************************************************************************************************************************/
@@ -206,11 +198,9 @@ namespace Animancer
         /************************************************************************************************************************/
 
         /// <summary>[Editor-Only]
-        /// Called by the Unity Editor when this component is first added (in Edit Mode) and whenever the Reset command
-        /// is executed from its context menu.
+        /// 当这个组件第一次被添加时(在编辑模式下)，以及当重置命令从它的上下文菜单中执行时，由Unity编辑器调用.
         /// <para></para>
-        /// Tries to find an <see cref="UnityEngine.Animator"/> component on this <see cref="GameObject"/> or its
-        /// children or parents (in that order).
+        /// 试图在这个 <see cref="GameObject"/> 上找到一个 <see cref="UnityEngine.Animator"/> 组件或它的子组件或父组件(按这个顺序).
         /// </summary>
         private void Reset()
         {
@@ -220,11 +210,9 @@ namespace Animancer
         /************************************************************************************************************************/
 
         /// <summary>[Editor-Only]
-        /// Called by the Unity Editor in Edit Mode whenever an instance of this script is loaded or a value is changed
-        /// in the Inspector.
+        /// 当在检查器中加载此脚本的实例或更改值时，由Unity编辑器在编辑模式中调用.
         /// <para></para>
-        /// Tries to find an <see cref="UnityEngine.Animator"/> component on this <see cref="GameObject"/> or its
-        /// parents or children (in that order).
+        /// 尝试在此 <see cref="GameObject"/> 或者它的父子层级上查找 <see cref="UnityEngine.Animator"/> (按照这个顺序).
         /// </summary>
         private void OnValidate()
         {
@@ -240,9 +228,9 @@ namespace Animancer
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Called by Unity when this component is first created.
+        /// 当这个组件第一次创建时被Unity调用.
         /// <para></para>
-        /// Initialises everything needed to play the <see cref="Clip"/>.
+        /// 初始化播放 <see cref="Clip"/>所需的内容.
         /// </summary>
         private void Awake()
         {
@@ -266,9 +254,9 @@ namespace Animancer
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Called by Unity when this component becomes enabled and active.
+        /// 当此组件启用并激活时，由Unity调用.
         /// <para></para>
-        /// Plays the <see cref="Clip"/> on the target <see cref="Animator"/>.
+        /// 在目标 <see cref="Animator"/>上播放 <see cref="Clip"/>.
         /// </summary>
         private void OnEnable()
         {
@@ -278,9 +266,9 @@ namespace Animancer
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Called by Unity every frame while this component is enabled and active.
+        /// 当这个组件被激活时，Unity会在每一帧调用它.
         /// <para></para>
-        /// Checks if the animation is done so it can pause the <see cref="PlayableGraph"/> to improve performance.
+        /// 检查动画是否完成，这样它可以暂停 <see cref="PlayableGraph"/> 来提高性能.
         /// </summary>
         private void Update()
         {
@@ -301,9 +289,9 @@ namespace Animancer
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Called by Unity when this component becomes disabled or inactive.
+        /// 当此组件被禁用或不活动时，由Unity调用.
         /// <para></para>
-        /// Ensures that the <see cref="_Graph"/> is properly cleaned up.
+        /// 确保 <see cref="_Graph"/> 被正确清理.
         /// </summary>
         private void OnDisable()
         {
@@ -316,7 +304,7 @@ namespace Animancer
 
             if (IsInitialised)
             {
-                // We need to call SetTime twice to ensure that animation events aren't triggered incorrectly.
+                // 我们需要调用两次SetTime以确保动画事件正确地触发.
                 _Playable.SetTime(0);
                 _Playable.SetTime(0);
             }
@@ -325,9 +313,9 @@ namespace Animancer
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Called by Unity when this component is destroyed.
+        /// 当这个组件被破坏时被Unity调用.
         /// <para></para>
-        /// Ensures that the <see cref="PlayableGraph"/> is properly cleaned up.
+        /// 确保 <see cref="PlayableGraph"/> 被正确的清理.
         /// </summary>
         private void OnDestroy()
         {
@@ -339,7 +327,7 @@ namespace Animancer
 
 #if UNITY_EDITOR
         /// <summary>[Editor-Only]
-        /// Ensures that the <see cref="PlayableGraph"/> is destroyed.
+        /// 确保 <see cref="PlayableGraph"/> 被正确的清理.
         /// </summary>
         ~SoloAnimation()
         {
@@ -350,7 +338,7 @@ namespace Animancer
         /************************************************************************************************************************/
 
         /// <summary>[<see cref="IAnimationClipSource"/>]
-        /// Adds the <see cref="Clip"/> to the list.
+        /// 把 <see cref="Clip"/> 添加到列表.
         /// </summary>
         public void GetAnimationClips(List<AnimationClip> clips) //获取动画片段
         {
@@ -373,14 +361,14 @@ namespace Animancer.Editor
     {
         /************************************************************************************************************************/
 
-        /// <summary>The animator referenced by each target.</summary>
+        /// <summary>被每个目标引用的animator.</summary>
         private Animator[] _Animators;
 
-        /// <summary>A <see cref="UnityEditor.SerializedObject"/> encapsulating the <see cref="_Animators"/>.</summary>
+        /// <summary>一个 <see cref="UnityEditor.SerializedObject"/> 封装了 <see cref="_Animators"/>.</summary>
         private UnityEditor.SerializedObject _SerializedAnimator;
 
 #if UNITY_2018_1_OR_NEWER
-        /// <summary>The <see cref="Animator.keepAnimatorControllerStateOnDisable"/> property.</summary>
+        /// <summary> <see cref="Animator.keepAnimatorControllerStateOnDisable"/> 属性.</summary>
         private UnityEditor.SerializedProperty _KeepStateOnDisable;
 #endif
 
@@ -397,7 +385,7 @@ namespace Animancer.Editor
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Draws the target's serialized fields.
+        /// 绘制目标的序列化字段.
         /// </summary>
         private void DoSerializedFieldsGUI()
         {
@@ -460,7 +448,7 @@ namespace Animancer.Editor
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Draws a toggle inverted from the <see cref="Animator.keepAnimatorControllerStateOnDisable"/> field.
+        /// 从 <see cref="Animator.keepAnimatorControllerStateOnDisable"/> 字段中反向绘制一个切换.
         /// </summary>
         private void DoStopOnDisableGUI()
         {
@@ -468,8 +456,8 @@ namespace Animancer.Editor
             var area = AnimancerGUI.LayoutSingleLineRect();
 
             var label = AnimancerGUI.TempContent("Stop On Disable",
-                "If true, disabling this object will stop and rewind all animations." +
-                " Otherwise they will simply be paused and will resume from their current states when it is re-enabled.");
+                " 如果为真，禁用此对象将停止并回滚所有动画." +
+                " 否则，它们将被暂停，并在重新启用时从当前状态继续.");
 
             if (_KeepStateOnDisable != null)
             {
@@ -495,7 +483,7 @@ namespace Animancer.Editor
 
         /************************************************************************************************************************/
 
-        /// <summary>Draws the target's runtime details.</summary>
+        /// <summary> 绘制目标的运行时详细信息. </summary>
         private void DoRuntimeDetailsGUI()
         {
             if (!UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode ||

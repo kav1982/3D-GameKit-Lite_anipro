@@ -10,8 +10,7 @@ using UnityEngine.Playables;
 namespace Animancer
 {
     /// <summary>
-    /// Proxy for an identical interface introduced in Unity 2018.3 to have a class provide its own list of
-    /// <see cref="AnimationClip"/>s to the Animation Window without an Animator Controller.
+    /// 一个在Unity 2018.3中引入的相同接口的代理，在没有动画控制器的情况下,让一个类提供它自己的列表到 <see cref="AnimationClip"/>s 动画窗口.
     /// </summary>
     public interface IAnimationClipSource
 #if UNITY_2018_3_OR_NEWER
@@ -21,7 +20,7 @@ namespace Animancer
     {
         /************************************************************************************************************************/
 
-        /// <summary>Gathers all the animations associated with this object.</summary>
+        /// <summary>收集与此对象关联的所有动画.</summary>
         void GetAnimationClips(List<AnimationClip> clips);
 
         /************************************************************************************************************************/
