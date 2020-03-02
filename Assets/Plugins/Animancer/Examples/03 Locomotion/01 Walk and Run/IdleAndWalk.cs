@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Animancer.Examples.Locomotion
 {
     /// <summary>
-    /// Animates a simple character to be able to stand idle or walk forwards or backwards based on user input.
+    /// 根据用户输入匹配一个简单的字符，使其能够空闲或向前或向后行走.
     /// </summary>
     [AddComponentMenu(Strings.MenuPrefix + "Examples/Locomotion - Idle And Walk")]
     [HelpURL(Strings.APIDocumentationURL + ".Examples.Locomotion/IdleAndWalk")]
@@ -39,22 +39,21 @@ namespace Animancer.Examples.Locomotion
             {
                 PlayMove();
 
-                // Since we don't have animations for moving backwards, just use the input as their speed so that
-                // moving backwards simply plays the animation backwards.
+                // 我们没有向后移动的动画，所以只是把正向的行走动画倒过来播放用作后退动画.
                 _Animancer.States.Current.Speed = movement;
 
-                // PlayMove could return the AnimancerState it plays, but using the CurrentState saves a bit of effort.
+                // PlayMove可以返回它播放的AnimancerState，但是使用CurrentState会节省力一点.
             }
             else
             {
-                // If we aren't moving, return to idle.
+                // 如果我们不移动，回到待机状态.
                 _Animancer.Play(_Idle, 0.25f);
             }
         }
 
         /************************************************************************************************************************/
 
-        // We want to override this method in the IdleAndWalkAndRun script.
+        // 我们希望在IdleAndWalkAndRun脚本中重写此方法.
         protected virtual void PlayMove()
         {
             _Animancer.Play(_Walk, 0.25f);
@@ -63,13 +62,12 @@ namespace Animancer.Examples.Locomotion
         /************************************************************************************************************************/
 
         /// <summary>
-        /// If you add a second script derived from this type to the same object, it will instead change the type of
-        /// the existing component, allowing you to easily swap between <see cref="IdleAndWalk"/> and
-        /// <see cref="IdleAndWalkAndRun"/>.
+        /// 如果您将此类型派生的第二个脚本添加到相同的对象，它将更改现有组件的类型，从而允许您轻松地在 <see cref="IdleAndWalk"/> 
+        /// 和 <see cref="IdleAndWalkAndRun"/>之间进行交换.
         /// </summary>
         protected virtual void Reset()
         {
-            AnimancerUtilities.IfMultiComponentThenChangeType(this);
+            AnimancerUtilities.IfMultiComponentThenChangeType(this); //如果有多个组件,则改变类型.
         }
 
         /************************************************************************************************************************/

@@ -1,13 +1,13 @@
 // Animancer // Copyright 2020 Kybernetik //
 
-#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value.
+#pragma warning disable CS0649 // 屏蔽字段从未被赋值，并且始终具有其默认值的警告.
 
 using UnityEngine;
 
 namespace Animancer.Examples.Locomotion
 {
     /// <summary>
-    /// Inherits from <see cref="IdleAndWalk"/> and adds the ability to run.
+    /// 继承了 <see cref="IdleAndWalk"/> 并且增加了跑步的能力.
     /// </summary>
     [AddComponentMenu(Strings.MenuPrefix + "Examples/Locomotion - Idle And Walk And Run")]
     [HelpURL(Strings.APIDocumentationURL + ".Examples.Locomotion/IdleAndWalkAndRun")]
@@ -21,12 +21,12 @@ namespace Animancer.Examples.Locomotion
 
         protected override void PlayMove()
         {
-            // We will play either the Walk or Run animation.
+            // 我们将播放Walk或Run动画.
 
-            // We need to know which animation we are trying to play and which is the other one.
+            // 我们需要知道哪些动画我们正在尝试播放,哪些是其它的.
             AnimationClip playAnimation, otherAnimation;
 
-            if (Input.GetButton("Fire3"))// Left Shift by default.
+            if (Input.GetButton("Fire3"))// Left Shift 默认按键
             {
                 playAnimation = _Run;
                 otherAnimation = Walk;
@@ -37,11 +37,10 @@ namespace Animancer.Examples.Locomotion
                 otherAnimation = _Run;
             }
 
-            // Play the one we want.
+            // 播放我们想要的那个.
             var playState = Animancer.Play(playAnimation, 0.25f);
 
-            // If the other one is still fading out, align their NormalizedTime to ensure they stay at the same
-            // relative progress through their walk cycle.
+            // 如果另一个动画仍在淡出，调整它们的归一化时间，以确保它们在播放周期中保持相同的相对进展.
             var otherState = Animancer.States[otherAnimation];
             if (otherState != null && otherState.IsPlaying)
                 playState.NormalizedTime = otherState.NormalizedTime;
