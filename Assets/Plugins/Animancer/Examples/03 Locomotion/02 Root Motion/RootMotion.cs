@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Animancer.Examples.Locomotion
 {
     /// <summary>
-    /// Demonstrates how to use Root Motion for some animations but not others.
+    /// 关于如何对某些动画使用根运动，但对其他动画不使用根运动.
     /// </summary>
     [AddComponentMenu(Strings.MenuPrefix + "Examples/Locomotion - Root Motion")]
     [HelpURL(Strings.APIDocumentationURL + ".Examples.Locomotion/RootMotion")]
@@ -17,14 +17,14 @@ namespace Animancer.Examples.Locomotion
         /************************************************************************************************************************/
 
         /// <summary>
-        /// A <see cref="ClipState.Transition"/> with an <see cref="_ApplyRootMotion"/> toggle.
+        /// 一个 <see cref="ClipState.Transition"/> 与一个 <see cref="_ApplyRootMotion"/> 切换.
         /// </summary>
         [Serializable]
         public class MotionTransition : ClipState.Transition
         {
             /************************************************************************************************************************/
 
-            [SerializeField, Tooltip("Determines if Root Motion should be enabled when this animation plays")]
+            [SerializeField, Tooltip("确定动画播放时是否应启用根运动")]
             private bool _ApplyRootMotion;
 
             /************************************************************************************************************************/
@@ -56,8 +56,8 @@ namespace Animancer.Examples.Locomotion
 
         /************************************************************************************************************************/
 
-        /// <summary>Plays the animation at the specified `index` in the <see cref="_Animations"/> array.</summary>
-        /// <remarks>This method is called by UI Buttons.</remarks>
+        /// <summary> 播放 <see cref="_Animations"/> 合集中指定的' index '的动画 </summary>
+        /// <remarks> 此方法由UI按钮调用 </remarks>
         public void Play(int index)
         {
             _Animancer.Play(_Animations[index]);
@@ -66,7 +66,7 @@ namespace Animancer.Examples.Locomotion
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Teleports this object back to its starting location if it moves too far.
+        /// 如果移动太远，就传送此对象到它的起始位置.
         /// </summary>
         private void FixedUpdate()
         {
@@ -76,20 +76,18 @@ namespace Animancer.Examples.Locomotion
 
         /************************************************************************************************************************/
 
-        // These fields determine which object the Root Motion will be applied to.
-        // You would normally only have one of these for whichever system you are using to move your characters.
-        // But for this example, we have all of them to demonstrate how each could be used.
+        // 这些字段决定根运动将应用于哪个对象.
+        // 通常情况下，对于您用来移动角色的任何系统，都只能使用其中之一.
+        // 但是在这个例子中，我们可以同时使用他们并且演示如何使用.
         [SerializeField] private Transform _MotionTransform;
         [SerializeField] private Rigidbody _MotionRigidbody;
         [SerializeField] private CharacterController _MotionCharacterController;
 
         /// <summary>
-        /// Called when the <see cref="Animator"/> would apply Root Motion. Applies that Root Motion to a different
-        /// object instead.
+        /// 调用 <see cref="Animator"/> 时,将启用根运动,将根运动应用于另一个对象.
         /// <para></para>
-        /// This can be useful if for example the character's <see cref="Rigidbody"/> or
-        /// <see cref="CharacterController"/> is on a parent of the <see cref="Animator"/> so that the model is kept
-        /// separate from the character's mechanics.
+        /// 如果角色的 <see cref="Rigidbody"/> 或 <see cref="CharacterController"/> 位于 <see cref="Animator"/> 的父节点上，
+        /// 因此模型与角色的机制是分离的，那么这将非常有用.
         /// </summary>
         private void OnAnimatorMove()
         {
@@ -113,7 +111,7 @@ namespace Animancer.Examples.Locomotion
             }
             else
             {
-                // If we aren't retargeting, just let Unity apply the Root Motion normally.
+                // 我们不是在重新定位，只是让Unity正常地应用根的运动.
                 _Animancer.Animator.ApplyBuiltinRootMotion();
             }
         }

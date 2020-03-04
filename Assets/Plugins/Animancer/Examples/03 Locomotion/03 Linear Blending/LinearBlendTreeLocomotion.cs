@@ -1,15 +1,15 @@
 // Animancer // Copyright 2020 Kybernetik //
 
-#pragma warning disable CS0618 // Type or member is obsolete (for ControllerStates in Animancer Lite).
-#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value.
+#pragma warning disable CS0618 // 屏蔽类型或成员已过时(对于 Animancer Lite 中的 ControllerStates)的警告
+#pragma warning disable CS0649 // 屏蔽字段从未被赋值，并且始终具有其默认值的警告
 
 using UnityEngine;
 
 namespace Animancer.Examples.Locomotion
 {
     /// <summary>
-    /// An example of how you can wrap a <see cref="RuntimeAnimatorController"/> containing a single blend tree in a
-    /// <see cref="Float1ControllerState"/> to easily control its parameter.
+    /// 这是一个示例，演示如何在一个 <see cref="Float1ControllerState"/> 中封装一个包含单一混合树的 
+    /// <see cref="RuntimeAnimatorController"/> 来轻松控制它的参数.
     /// </summary>
     [AddComponentMenu(Strings.MenuPrefix + "Examples/Locomotion - Linear Blend Tree Locomotion")]
     [HelpURL(Strings.APIDocumentationURL + ".Examples.Locomotion/LinearBlendTreeLocomotion")]
@@ -26,24 +26,22 @@ namespace Animancer.Examples.Locomotion
 
         private void OnEnable()
         {
-            // Since Float1ControllerTransition is a Transition Asset which can be shared among multiple objects, we
-            // cannot simply access the _Controller.Transition.State whenever we want because it will only hold the
-            // most recently played state (which will only be correct for one instance but not the others).
+            // 因为Float1ControllerTransition是一个可以在多个对象之间共享的转换资产，所以我们不能简单地访问_Controller.Transition.
+            // 因为它只会保存最近播放的状态(只对一个实例是正确的，而对其他实例则不正确).
 
-            // So instead, we grab the state right after playing it.
+            // 相反，我们会在播放后立即获取状态.
 
             _Animancer.Play(_Controller);
             _State = _Controller.Transition.State;
 
-            // The state returned by the Play method would do the same thing, but it only returns a base AnimancerState
-            // and we need a Float1ControllerState to access its Parameter property below so we would need to cast it:
-            // _State = (Float1ControllerState)_Animancer.Play(_Controller);
+            // Play方法返回的状态会做同样的事情，但它只返回一个基本的AnimancerState，我们需要一个Float1ControllerState来访问它下面的参数属性，
+            // 所以我们需要对它进行类型转换:_State = (Float1ControllerState)_Animancer.Play(_Controller);
         }
 
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Set by a <see cref="UnityEngine.Events.UnityEvent"/> on a <see cref="UnityEngine.UI.Slider"/>.
+        /// 由一个 <see cref="UnityEngine.Events.UnityEvent"/> 在一个 <see cref="UnityEngine.UI.Slider"/>上设置.
         /// </summary>
         public float Speed
         {

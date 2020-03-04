@@ -8,7 +8,7 @@ using UnityEngine.Playables;
 
 namespace Animancer
 {
-    /// <summary>Plays a single <see cref="AnimationClip"/> on startup.</summary>
+    /// <summary>在启动时播放单个 <see cref="AnimationClip"/> .</summary>
     [AddComponentMenu(Strings.MenuPrefix + "Solo Animation")]
     [HelpURL(Strings.APIDocumentationURL + "/SoloAnimation")]
     [DefaultExecutionOrder(-5000)]//在使用此组件之前进行初始化
