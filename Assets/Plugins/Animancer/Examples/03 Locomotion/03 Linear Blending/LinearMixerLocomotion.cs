@@ -8,8 +8,7 @@ using UnityEngine;
 namespace Animancer.Examples.Locomotion
 {
     /// <summary>
-    /// An example of how you can use a <see cref="LinearMixerState"/> to mix a set of animations based on a
-    /// <see cref="Speed"/> parameter.
+    /// 一个关于如何使用 <see cref="LinearMixerState"/> 混合一组基于 <see cref="Speed"/> 参数的动画的例子.
     /// </summary>
     [AddComponentMenu(Strings.MenuPrefix + "Examples/Locomotion - Linear Mixer Locomotion")]
     [HelpURL(Strings.APIDocumentationURL + ".Examples.Locomotion/LinearMixerLocomotion")]
@@ -33,7 +32,7 @@ namespace Animancer.Examples.Locomotion
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Set by a <see cref="UnityEngine.Events.UnityEvent"/> on a <see cref="UnityEngine.UI.Slider"/>.
+        /// 由<see cref="UnityEngine.Events.UnityEvent"/> 在 <see cref="UnityEngine.UI.Slider"/> 上设置.
         /// </summary>
         public float Speed
         {
