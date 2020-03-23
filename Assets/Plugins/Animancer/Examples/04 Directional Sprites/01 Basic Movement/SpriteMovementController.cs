@@ -1,14 +1,13 @@
 // Animancer // Copyright 2020 Kybernetik //
 
-#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value.
+#pragma warning disable CS0649 // 屏蔽字段从未被赋值，并且始终具有其默认值的警告.
 
 using UnityEngine;
 
 namespace Animancer.Examples.DirectionalSprites
 {
     /// <summary>
-    /// Animates a character to either stand idle or walk using animations defined in
-    /// <see cref="DirectionalAnimationSet"/>s.
+    /// 使用<see cref="DirectionalAnimationSet"/>s中定义的动画使角色处于空闲或行走状态.
     /// </summary>
     [AddComponentMenu(Strings.MenuPrefix + "Examples/Directional Sprites - Sprite Movement Controller")]
     [HelpURL(Strings.APIDocumentationURL + ".Examples.DirectionalSprites/SpriteMovementController")]
@@ -16,9 +15,9 @@ namespace Animancer.Examples.DirectionalSprites
     {
         /************************************************************************************************************************/
 
-        [SerializeField] private AnimancerComponent _Animancer;
-        [SerializeField] private DirectionalAnimationSet _Idles;
-        [SerializeField] private DirectionalAnimationSet _Walks;
+        [SerializeField] private AnimancerComponent _Animancer; 
+        [SerializeField] private DirectionalAnimationSet _Idles; //定向动画设置 待机
+        [SerializeField] private DirectionalAnimationSet _Walks; //定向动画设置 行走
         [SerializeField] private Vector2 _Facing = Vector2.down;
 
         /************************************************************************************************************************/
@@ -32,7 +31,7 @@ namespace Animancer.Examples.DirectionalSprites
 
         private void Update()
         {
-            // WASD Controls.
+            // WASD Controls.根据移动的水平或者垂直状态判定是否播放行走动画
             var input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
             if (input != Vector2.zero)
             {
@@ -40,16 +39,15 @@ namespace Animancer.Examples.DirectionalSprites
 
                 Play(_Walks);
 
-                // Play could return the AnimancerState it gets from _Animancer.Play,
-                // But we can also just access it using _Animancer.States.Current.
+                // Play 可以返回从 _Animancer.Play 获取的AnimancerState,
+                // 但是我们也可以使用 _Animancer.States.Current 来访问它
 
-                var isRunning = Input.GetButton("Fire3");// Left Shift by default.
+                var isRunning = Input.GetButton("Fire3");// 左 Shift 按键.
                 _Animancer.States.Current.Speed = isRunning ? 2 : 1;
             }
             else
             {
-                // When we are not moving, we still remember the direction we are facing
-                // so we can continue using the correct idle animation for that direction.
+                // 当我们不动的时候,仍然还记得我们面朝的方向,我们可以继续使用正确的空闲动画方向.
                 Play(_Idles);
             }
         }
@@ -58,14 +56,13 @@ namespace Animancer.Examples.DirectionalSprites
 
         private void Play(DirectionalAnimationSet animations)
         {
-            // Instead of only a single animation, we have a different one for each direction we can face.
-            // So we get whichever is appropriate for that direction and play it.
+            // 装载每一个单独的动画时, 我们有不同的动画对应每个面朝的方向.
+            // 所以我们选择适合那个方向的，然后播放它.
 
             var clip = animations.GetClip(_Facing);
             _Animancer.Play(clip);
 
-            // Or we could do that in one line:
-            // _Animancer.Play(animations.GetClip(_Facing));
+            // 或者我们可以在一行中这样做: _Animancer.Play(animations.GetClip(_Facing));
         }
 
         /************************************************************************************************************************/
@@ -73,10 +70,9 @@ namespace Animancer.Examples.DirectionalSprites
         /************************************************************************************************************************/
 
         /// <summary>[Editor-Only]
-        /// Called by the Unity Editor in Edit Mode whenever an instance of this script is loaded or a value is changed
-        /// in the Inspector.
+        /// 每当加载该脚本的实例或在检查器中更改值时，在编辑模式下由Unity Editor引导.
         /// <para></para>
-        /// Sets the character's starting sprite in Edit Mode so you can see it while working in the scene.
+        /// 在编辑模式下设置角色的初始脚本，这样你可以在场景中工作时看到它.
         /// </summary>
         private void OnValidate()
         {
