@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Animancer.Examples.Events
 {
     /// <summary>
-    /// Uses Animancer Events to play a sound randomly selected from an array.
+    /// 使用动画事件播放从数组中随机选择的声音.
     /// </summary>
     [AddComponentMenu(Strings.MenuPrefix + "Examples/Footstep Events - Animancer")]
     [HelpURL(Strings.APIDocumentationURL + ".Examples.AnimationEvents/FootstepEvents")]
@@ -29,21 +29,19 @@ namespace Animancer.Examples.Events
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Called by Animancer Events. Chooses a random sound an plays it on the specified `source` (because each foot
-        /// has its own <see cref="AudioSource"/>).
+        /// 被Animancer事件调用.在指定的“源”上播放随机声音(因为每只脚都有自己的<see cref="AudioSource"/>).
         /// </summary>
         public void PlaySound(AudioSource source)
         {
             source.clip = _Sounds[Random.Range(0, _Sounds.Length)];
             source.Play();
 
-            // Note that the minimum value in Random.Range is inclusive (so it can pick 0) while the maximum value is
-            // exclusive (so it can not pick `_Sounds.Length`), which is perfect for picking a random array element.
+            // 注意，在随机的最小值。Range是包容性的(因此它可以选择0)，而最大值是排他的(因此它不能选择' _Sounds.Length ').
+            // 这对于选择随机数组元素来说是完美的.
 
-            // A more complex system could have different footstep sounds depending on the surface being stepped on.
-            // This could be done by raycasting down from the feet and determining which sound to use based on the
-            // sharedMaterial of the ground's Renderer as demonstrated in the 3D Game Kit example or even a simple
-            // script that holds an enum indicating the type.
+            // 一个更复杂的系统可能会有不同的脚步声，这取决于被踩的表面.
+            // 这可以通过从脚开始的光线投射来实现，并基于 3D Game Kit 示例中所演示的地面渲染器的共享材质来决定使用哪一种声音.
+            // 甚至可以通过一个简单的脚本来保存一个enum来指示类型。
         }
 
         /************************************************************************************************************************/
