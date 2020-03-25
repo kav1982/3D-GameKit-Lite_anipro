@@ -31,7 +31,7 @@ namespace Animancer
         private Animator _Animator;
 
         /// <summary>[<see cref="SerializeField"/>]
-        /// The <see cref="UnityEngine.Animator"/> 此脚本控制的组件
+        /// <see cref="UnityEngine.Animator"/> 此脚本控制的组件
         /// </summary>
         public Animator Animator
         {
@@ -91,7 +91,7 @@ namespace Animancer
         }
 
         /************************************************************************************************************************/
-
+        //当这个组件被禁用或者它的游戏对象变的不再活跃
         [SerializeField, Tooltip("Determines what happens when this component is disabled" +
             " or its GameObject becomes inactive (i.e. in OnDisable):" +
             "\n- Stop all animations" +
@@ -336,7 +336,7 @@ namespace Animancer
         /// 删除 <see cref="Animator.runtimeAnimatorController"/> 如果找到的话
         /// <para></para>
         /// 此方法还可以防止将此组件的多个副本添加到单个对象。这样做将立即销毁新字段并更改旧字段的类型以匹配新字段，
-        /// 从而允许您更改类型而不会丢失它们共享的任何序列化字段的值
+        /// 从而允许您更改类型而不会丢失它们共享的任何序列化字段的值.
         /// </summary>
         protected virtual void Reset()
         {

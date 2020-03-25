@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Animancer.Examples.StateMachines.Creatures
 {
     /// <summary>
-    /// A state for a <see cref="Creature"/> which simply plays an animation.
+    /// 一个 <see cref="Creature"/> 的状态,只播放一个动画.
     /// </summary>
     [AddComponentMenu(Strings.MenuPrefix + "Examples/Creatures - Creature State")]
     [HelpURL(Strings.APIDocumentationURL + ".Examples.StateMachines.Creatures/CreatureState")]
@@ -22,7 +22,7 @@ namespace Animancer.Examples.StateMachines.Creatures
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Plays the animation and if it is not looping it returns the <see cref="Creature"/> to Idle afterwards.
+        /// 播放动画，如果没有循环，则返回 <see cref="Creature"/> 到待机状态.
         /// </summary>
         private void OnEnable()
         {
