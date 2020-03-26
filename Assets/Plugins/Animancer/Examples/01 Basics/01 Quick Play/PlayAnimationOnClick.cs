@@ -27,7 +27,7 @@ namespace Animancer.Examples.Basics
         /************************************************************************************************************************/
 
         /// <summary>
-        /// On startup, play the idle animation.
+        /// 在一开始的时候播放idle动画.
         /// </summary>
         private void OnEnable()
         {

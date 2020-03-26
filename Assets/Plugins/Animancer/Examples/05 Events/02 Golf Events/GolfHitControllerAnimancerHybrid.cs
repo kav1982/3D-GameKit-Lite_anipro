@@ -1,19 +1,19 @@
 // Animancer // Copyright 2020 Kybernetik //
 
-#pragma warning disable CS0618 // Type or member is obsolete (for Animancer Events in Animancer Lite).
-#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value.
+#pragma warning disable CS0618 // 屏蔽类型或成员已过时(对于Animancer Lite中的Animancer事件)的警告.
+#pragma warning disable CS0649 // 屏蔽字段从未被赋值，并且始终具有其默认值的警告.
 
 using UnityEngine;
 
 namespace Animancer.Examples.Events
 {
     /// <summary>
-    /// An <see cref="GolfHitController"/> that uses an Animancer Event which has its time set in the Inspector but its
-    /// callback left blank so that it can be assigned by code (a "hybrid" between Inspector and Code based systems).
+    /// 一个 <see cref="GolfHitController"/> 它使用了一个Animancer事件,在检查器中设置了它的时间,但是它的回调是空的,
+    /// 所以它可以被代码赋值(一个检查器和基于代码的系统之间的“混合”).
     /// </summary>
     [AddComponentMenu(Strings.MenuPrefix + "Examples/Golf Events - Animancer Hybrid")]
     [HelpURL(Strings.APIDocumentationURL + ".Examples.AnimationEvents/GolfHitControllerAnimancerHybrid")]
-    public sealed class GolfHitControllerAnimancerHybrid : GolfHitController
+    public sealed class GolfHitControllerAnimancerHybrid : GolfHitController // 高尔夫击球控制器动画混合
     {
         /************************************************************************************************************************/
 
@@ -32,7 +32,7 @@ namespace Animancer.Examples.Events
             Debug.Assert(_Swing.Events.Sequence.Count == 1, "Expected one event for hitting the ball", this);
             _Swing.Events.Sequence.Set(0, HitBall);
 
-            // If we did not create the event in the Inspector, we could add it here:
+            // 如果我们没有在检查器中创建事件，我们可以添加到这里:
             //_Swing.Events.Sequence.Add(new AnimancerEvent(0.375f, OnHitBall));
 
             _Swing.Events.Sequence.OnEnd = EndSwing;
