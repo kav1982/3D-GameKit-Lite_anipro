@@ -1,14 +1,13 @@
 // Animancer // Copyright 2020 Kybernetik //
 
-#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value.
-
+#pragma warning disable CS0649 // 屏蔽字段从未被赋值，并且始终具有其默认值的警告.
 using System;
 using UnityEngine;
 
 namespace Animancer.Examples.StateMachines.Brains
 {
     /// <summary>
-    /// The numerical details of a <see cref="Creature"/>.
+    /// 一个 <see cref="Creature"/>的数值细节.
     /// </summary>
     [Serializable]
     public sealed class CreatureStats
@@ -36,9 +35,9 @@ namespace Animancer.Examples.StateMachines.Brains
 
         /************************************************************************************************************************/
 
-        // Max health.
-        // Strength, dexterity, intelligence.
-        // Carrying capacity.
+        // 生命值满.
+        // 力量、敏捷、智力.
+        // 承载能力.
         // Etc.
 
         /************************************************************************************************************************/

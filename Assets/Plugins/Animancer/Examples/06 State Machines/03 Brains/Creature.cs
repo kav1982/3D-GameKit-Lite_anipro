@@ -1,6 +1,6 @@
 // Animancer // Copyright 2020 Kybernetik //
 
-#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value.
+#pragma warning disable CS0649 // 屏蔽字段从未被赋值，并且始终具有其默认值的警告.
 
 using Animancer.FSM;
 using System;
@@ -9,11 +9,11 @@ using UnityEngine;
 namespace Animancer.Examples.StateMachines.Brains
 {
     /// <summary>
-    /// A centralised group of references to the common parts of a creature and a state machine for their actions.
+    /// 集中引用一个角色的公共部分和它们的动作状态机.
     /// </summary>
     [AddComponentMenu(Strings.MenuPrefix + "Examples/Brains - Creature")]
     [HelpURL(Strings.APIDocumentationURL + ".Examples.StateMachines.Brains/Creature")]
-    [DefaultExecutionOrder(-5000)]// Initialise the State Machine early.
+    [DefaultExecutionOrder(-5000)]// 尽早初始化状态机.
     public sealed class Creature : MonoBehaviour
     {
         /************************************************************************************************************************/
@@ -37,7 +37,7 @@ namespace Animancer.Examples.StateMachines.Brains
             get { return _Brain; }
             set
             {
-                // The More Brains example uses this to swap between brains at runtime.
+                // 更多的 Brains示例在运行时使用这种方法在Brains之间进行交换.
 
                 if (_Brain == value)
                     return;
@@ -45,11 +45,11 @@ namespace Animancer.Examples.StateMachines.Brains
                 var oldBrain = _Brain;
                 _Brain = value;
 
-                // Make sure the old brain doesn't still reference this creature.
+                // 确保老的 brain 不会仍然引用这个角色.
                 if (oldBrain != null)
                     oldBrain.Creature = null;
 
-                // Give the new brain a reference to this creature.
+                // 给新的 brain 一个关于此角色的引用.
                 if (value != null)
                     value.Creature = this;
             }
@@ -59,21 +59,21 @@ namespace Animancer.Examples.StateMachines.Brains
         private CreatureStats _Stats;
         public CreatureStats Stats { get { return _Stats; } }
 
-        // Ground Detector.
-        // Health and Mana.
-        // Pathfinding.
+        // 地面检测.
+        // 体力和法力.
+        // 寻路.
         // Etc.
-        // Anything common to most creatures.
+        // 任何与大多数角色相同的东西.
 
         /************************************************************************************************************************/
 
         /// <summary>
-        /// The Finite State Machine that manages the actions of this creature.
+        /// 管理该角色的动作的有限状态机.
         /// </summary>
         public StateMachine<CreatureState> StateMachine { get; private set; }
 
         /// <summary>
-        /// Forces the <see cref="StateMachine"/> to return to the <see cref="Idle"/> state.
+        /// 强制 <see cref="StateMachine"/> 返回 <see cref="Idle"/> 状态.
         /// </summary>
         public Action ForceEnterIdleState { get; private set; }
 
@@ -81,8 +81,7 @@ namespace Animancer.Examples.StateMachines.Brains
 
         private void Awake()
         {
-            // Note that this class has a [DefaultExecutionOrder] attribute to ensure that this method runs before any
-            // other components that might want to access it.
+            // 注意，这个类有一个[DefaultExecutionOrder]属性，以确保这个方法在任何其他可能想要访问它的组件之前运行.
 
             ForceEnterIdleState = () => StateMachine.ForceSetState(_Idle);
 
@@ -94,13 +93,11 @@ namespace Animancer.Examples.StateMachines.Brains
         /************************************************************************************************************************/
 
         /// <summary>[Editor-Only]
-        /// Inspector Gadgets Pro calls this method after drawing the regular Inspector GUI, allowing this script to
-        /// display its current state in Play Mode.
+        /// Inspector gadget 专业版在绘制常规Inspector GUI后调用此方法,允许此脚本在播放模式中显示其当前状态.
         /// </summary>
         /// <remarks>
-        /// Inspector Gadgets Pro allows you to easily customise the Inspector without writing a full custom Inspector
-        /// class by simply adding a method with this name. Without Inspector Gadgets, this method will do nothing.
-        /// It can be purchased from https://kybernetik.com.au/inspector-gadgets/pro
+        /// Inspector gadget Pro允许您轻松地自定义Inspector,而无需编写完整的自定义Inspector类,只需添加一个具有此名称的方法即可. 
+        /// 没有 Inspector Gadgets, 这个方法什么也做不了,可以从 https://kybernetik.com.au/inspector-gadgets/pro 购买此工具.
         /// </remarks>
         private void AfterInspectorGUI()
         {

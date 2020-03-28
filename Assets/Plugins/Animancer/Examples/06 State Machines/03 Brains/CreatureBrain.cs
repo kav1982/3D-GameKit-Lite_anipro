@@ -1,13 +1,13 @@
 // Animancer // Copyright 2020 Kybernetik //
 
-#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value.
+#pragma warning disable CS0649 // 屏蔽字段从未被赋值，并且始终具有其默认值的警告.
 
 using UnityEngine;
 
 namespace Animancer.Examples.StateMachines.Brains
 {
     /// <summary>
-    /// Base class for controlling the actions of a <see cref="Brains.Creature"/>.
+    /// 控制一个 <see cref="Brains.Creature"/> 动作的基类.
     /// </summary>
     [AddComponentMenu(Strings.MenuPrefix + "Examples/Brains - Creature Brain")]
     [HelpURL(Strings.APIDocumentationURL + ".Examples.StateMachines.Brains/CreatureBrain")]
@@ -22,7 +22,7 @@ namespace Animancer.Examples.StateMachines.Brains
             get { return _Creature; }
             set
             {
-                // The More Brains example uses this to swap between brains at runtime.
+                // 更多Brains示例使用这个在运行时在Brains之间进行切换.
 
                 if (_Creature == value)
                     return;
@@ -30,12 +30,12 @@ namespace Animancer.Examples.StateMachines.Brains
                 var oldCreature = _Creature;
                 _Creature = value;
 
-                // Make sure the old creature doesn't still reference this brain.
+                // 确保那个旧的角色不再映射这个brain.
                 if (oldCreature != null)
                     oldCreature.Brain = null;
 
-                // Give the new creature a reference to this brain.
-                // We also only want brains to be enabled when they actually have a creature to control.
+                // 给一个新的角色来映射这个 brain.
+                // 我也只希望 brains 在有角色控制的时候才会被激活.
                 if (value != null)
                 {
                     value.Brain = this;
@@ -50,10 +50,10 @@ namespace Animancer.Examples.StateMachines.Brains
 
         /************************************************************************************************************************/
 
-        /// <summary>The direction this brain wants to move.</summary>
+        /// <summary> brain 想要移动的方向. </summary>
         public Vector3 MovementDirection { get; protected set; }
 
-        /// <summary>Indicates whether this brain wants to run.</summary>
+        /// <summary> 显示 brain 是否在跑的状态.</summary>
         public bool IsRunning { get; protected set; }
 
         /************************************************************************************************************************/
