@@ -12,7 +12,8 @@ namespace Gamekit3D.GameCommands
 
         void OnEnable()
         {
-            var interactive = target as GameCommandReceiver;
+            var interactive = target as GameCommandReceiver;// 当前的receiver
+            // 将当前所有sender 添加到 senders 中
             senders.Clear();
             foreach (SendGameCommand si in Resources.FindObjectsOfTypeAll(typeof(SendGameCommand)))
             {
@@ -23,10 +24,12 @@ namespace Gamekit3D.GameCommands
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
-            GUILayout.BeginVertical("box");
+            GUILayout.BeginVertical("box"); //垂直排布
             GUILayout.Label("Senders");
             foreach (var i in senders)
+            {
                 EditorGUILayout.ObjectField(i, typeof(SendGameCommand), true);
+            }
             GUILayout.EndVertical();
         }
 

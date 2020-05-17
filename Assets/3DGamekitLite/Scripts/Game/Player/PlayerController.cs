@@ -12,7 +12,7 @@ namespace Gamekit3D
         protected static PlayerController s_Instance;
         public static PlayerController instance { get { return s_Instance; } }
 
-        public bool respawning { get { return m_Respawning; } }
+        public bool respawning { get { return m_Respawning; } }// 是否正在重生
 
         public float maxForwardSpeed = 8f;        // How fast Ellen can run.
         public float gravity = 20f;               // How fast Ellen accelerates downwards when airborne.

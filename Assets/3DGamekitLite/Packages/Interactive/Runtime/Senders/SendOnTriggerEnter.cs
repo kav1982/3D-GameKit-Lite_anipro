@@ -10,9 +10,9 @@ namespace Gamekit3D.GameCommands
     {
         public LayerMask layers;
 
-        void OnTriggerEnter(Collider other)
+        void OnTriggerEnter(Collider other) //进入碰撞器范围
         {
-            if (0 != (layers.value & 1 << other.gameObject.layer))
+            if (0 != (layers.value & 1 << other.gameObject.layer)) //根据选择的层级触发事件
             {
                 Send();
             }

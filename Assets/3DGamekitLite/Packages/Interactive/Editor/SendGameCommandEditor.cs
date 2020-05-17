@@ -36,6 +36,7 @@ namespace Gamekit3D.GameCommands
             }
         }
 
+        // 绘制交互
         public static void DrawInteraction(SendGameCommand si)
         {
             var start = si.transform.position;
@@ -43,10 +44,12 @@ namespace Gamekit3D.GameCommands
             var dir = (end - start).normalized;
             
             if (Application.isPlaying)
+                // 指令发送的时候 会短暂的显示绿色
                 Handles.color = Color.Lerp(Color.white, Color.green, si.Temperature);
             var steps = Mathf.FloorToInt((end - start).magnitude);
             for (var i = 0; i < steps; i++)
             {
+               // 绘制一个箭头 
                 Handles.ArrowHandleCap(0, start + (dir * i), Quaternion.LookRotation(dir), 1, EventType.Repaint);
             }
         }

@@ -25,7 +25,7 @@ namespace Gamekit3D.GameCommands
         // Implement this in subclass to define the actiosn that handler should do
         public abstract void PerformInteraction();
 
-        public virtual void OnInteraction()
+        public virtual void OnInteraction()//触发交互
         {
             if (isOneShot && isTriggered) return;
             isTriggered = true;
@@ -34,7 +34,7 @@ namespace Gamekit3D.GameCommands
                 if (Time.time > startTime + coolDown)
                 {
                     startTime = Time.time + startDelay;
-                    ExecuteInteraction();
+                    ExecuteInteraction(); //执行交互
                 }
             }
             else

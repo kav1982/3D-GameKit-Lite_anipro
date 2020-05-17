@@ -12,7 +12,7 @@ namespace Gamekit3D.GameCommands
         public override void PerformInteraction()
         {
             count++;
-            target.material = materials[count % materials.Length];
+            target.material = materials[count % materials.Length];//È¡ÓàÊıÇĞ»»²ÄÖÊ
         }
     }
 }
