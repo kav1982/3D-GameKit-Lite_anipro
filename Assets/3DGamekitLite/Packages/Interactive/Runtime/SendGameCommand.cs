@@ -23,9 +23,10 @@ namespace Gamekit3D.GameCommands
         [Tooltip("If onSendAudio is not null, it will play after this time has passed.")]
         public float audioDelay;
 
-        float lastSendTime;
-        bool isTriggered = false;
+        float lastSendTime;// 上次发送时间
+        bool isTriggered = false;// 是否已经发送了
 
+        // 处理颜色渐变的
         public float Temperature
         {
             get
@@ -34,7 +35,7 @@ namespace Gamekit3D.GameCommands
             }
         }
 
-        [ContextMenu("Send Interaction")]
+        [ContextMenu("Send Interaction")]// 这个设置可以在Inpector对应脚本右键直接发送命令, 方便测试
         public void Send()
         {
             if (oneShot && isTriggered) return;

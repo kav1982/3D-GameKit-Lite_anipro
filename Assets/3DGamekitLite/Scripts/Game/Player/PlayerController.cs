@@ -37,11 +37,13 @@ namespace Gamekit3D
         protected bool m_IsAnimatorTransitioning;
         protected AnimatorStateInfo m_PreviousCurrentStateInfo;    // Information about the base layer of the animator from last frame.
         protected AnimatorStateInfo m_PreviousNextStateInfo;
+
+        // 控制动画的属性值
         protected bool m_PreviousIsAnimatorTransitioning;
-        protected bool m_IsGrounded = true;            // Whether or not Ellen is currently standing on the ground.
-        protected bool m_PreviouslyGrounded = true;    // Whether or not Ellen was standing on the ground last frame.
-        protected bool m_ReadyToJump;                  // Whether or not the input state and Ellen are correct to allow jumping.
-        protected float m_DesiredForwardSpeed;         // How fast Ellen aims be going along the ground based on input.
+        protected bool m_IsGrounded = true;            // Whether or not Ellen is currently standing on the ground. 是否现在站在陆地上
+        protected bool m_PreviouslyGrounded = true;    // Whether or not Ellen was standing on the ground last frame. 上一帧是否站在陆地上
+        protected bool m_ReadyToJump;                  // Whether or not the input state and Ellen are correct to allow jumping. 是否准备Jump
+        protected float m_DesiredForwardSpeed;         // How fast Ellen aims be going along the ground based on input. 
         protected float m_ForwardSpeed;                // How fast Ellen is currently going along the ground.
         protected float m_VerticalSpeed;               // How fast Ellen is currently moving up or down.
         protected PlayerInput m_Input;                 // Reference used to determine how Ellen should move.
